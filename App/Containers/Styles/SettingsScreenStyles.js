@@ -3,6 +3,7 @@ import { Metrics, ApplicationStyles } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  ...ApplicationStyles.tabBar,
   container: {
     paddingBottom: Metrics.baseMargin
   },

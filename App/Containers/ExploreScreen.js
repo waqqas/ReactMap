@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
 import { ScrollView, Text, Image, View } from 'react-native'
 import { Images } from '../Themes'
+import Icon from "react-native-vector-icons/FontAwesome"
 
 // Styles
 import styles from './Styles/ExploreScreenStyles'
 
 export default class ExploreScreen extends Component {
+
+  static navigationOptions = ({navigation}) => ({
+    title: 'Explore',
+    tabBarLabel: 'Explore',
+    tabBarIcon: ({focused, tintColor}) => (
+      <Icon name="compass" style={focused ? styles.tabBarIcon : styles.tabBarIconInactive}/>)
+  });
+
   render () {
     return (
       <View style={styles.mainContainer}>

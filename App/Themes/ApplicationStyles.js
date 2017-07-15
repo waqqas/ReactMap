@@ -74,7 +74,16 @@ const ApplicationStyles = {
     borderColor: Colors.ember,
     alignItems: 'center',
     textAlign: 'center'
-  }
+  },
+  tabBar: {
+    tabBarIcon: {
+      color: Colors.app
+    },
+    tabBarIconInactive: {
+      color: Colors.steel
+    }
+  },
+
 }
 
 export default ApplicationStyles
