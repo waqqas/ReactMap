@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {View} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome"
-import MapView from "react-native-maps"
+import Icon from "react-native-vector-icons/FontAwesome";
+import MapView from "react-native-maps";
 // Styles
 import styles from "./Styles/ExploreScreenStyles";
 
@@ -14,7 +14,7 @@ export default class ExploreScreen extends Component {
       <Icon name="compass" style={focused ? styles.tabBarIcon : styles.tabBarIconInactive}/>)
   });
 
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +24,15 @@ export default class ExploreScreen extends Component {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421
       },
-      markers: []
+      markers: [
+        {
+          title: 'POI',
+          coordinate: {
+            latitude: 29.00,
+            longitude: -82.00
+          }
+        }
+      ]
     }
 
     this.onRegionChange = this.onRegionChange.bind(this)
@@ -32,23 +40,22 @@ export default class ExploreScreen extends Component {
   }
 
   onRegionChange(region) {
-    this.setState({ region });
+    this.setState({region});
   }
 
   render() {
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        />
-        {this.state.markers.map(marker => (
-          <MapView.Marker
-            coordinate={marker.latlng}
-            title={marker.title}
-            description={marker.description}
-          />
-        ))}
+                 region={this.state.region}
+                 onRegionChange={this.onRegionChange}>
+          {this.state.markers.map(marker => (
+            <MapView.Marker
+              coordinate={marker.coordinate}
+              title={marker.title}
+            />
+          ))}
+        </MapView>
       </View>
     )
   }
