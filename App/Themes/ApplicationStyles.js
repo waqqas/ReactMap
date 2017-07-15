@@ -77,13 +77,12 @@ const ApplicationStyles = {
   },
   tabBar: {
     tabBarIcon: {
-      color: Colors.app
+      color: Colors.iosBlue
     },
     tabBarIconInactive: {
       color: Colors.steel
     }
   },
-
 }
 
 export default ApplicationStyles

@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
-import { Images } from '../Themes'
+import React, {Component} from "react";
+import {View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"
-
+import MapView from "react-native-maps"
 // Styles
-import styles from './Styles/ExploreScreenStyles'
+import styles from "./Styles/ExploreScreenStyles";
 
 export default class ExploreScreen extends Component {
 
@@ -15,23 +14,41 @@ export default class ExploreScreen extends Component {
       <Icon name="compass" style={focused ? styles.tabBarIcon : styles.tabBarIconInactive}/>)
   });
 
-  render () {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      region: {
+        latitude: 29.00,
+        longitude: -82.00,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      },
+      markers: []
+    }
+
+    this.onRegionChange = this.onRegionChange.bind(this)
+
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
+  render() {
     return (
       <View style={styles.mainContainer}>
-        <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
-        <ScrollView style={styles.container}>
-          <View style={styles.centered}>
-            <Image source={Images.launch} style={styles.logo} />
-          </View>
-
-          <View style={styles.section} >
-            <Image source={Images.ready} />
-            <Text style={styles.sectionText}>
-              This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to ship. For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
-            </Text>
-          </View>
-
-        </ScrollView>
+        <MapView style={styles.map}
+          region={this.state.region}
+          onRegionChange={this.onRegionChange}
+        />
+        {this.state.markers.map(marker => (
+          <MapView.Marker
+            coordinate={marker.latlng}
+            title={marker.title}
+            description={marker.description}
+          />
+        ))}
       </View>
     )
   }
