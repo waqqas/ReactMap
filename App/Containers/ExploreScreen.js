@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
+import _ from "lodash";
 // Styles
+import AppConfig from "../Config/AppConfig";
 import styles from "./Styles/ExploreScreenStyles";
 
 export default class ExploreScreen extends Component {
@@ -18,19 +20,14 @@ export default class ExploreScreen extends Component {
     super(props)
 
     this.state = {
-      region: {
-        latitude: 29.00,
-        longitude: -82.00,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
-      },
+      region: _.mergeWith(AppConfig.initialCoordinate, {
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1
+      }),
       markers: [
         {
-          title: 'POI',
-          coordinate: {
-            latitude: 29.00,
-            longitude: -82.00
-          }
+          key: 1,
+          coordinate: AppConfig.initialCoordinate
         }
       ]
     }
@@ -51,8 +48,8 @@ export default class ExploreScreen extends Component {
                  onRegionChange={this.onRegionChange}>
           {this.state.markers.map(marker => (
             <MapView.Marker
+              key={marker.key}
               coordinate={marker.coordinate}
-              title={marker.title}
             />
           ))}
         </MapView>
