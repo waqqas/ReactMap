@@ -34,10 +34,10 @@ export function getRegionForCoordinates(points) {
 
 export function getCoordinatesFromRegion(region) {
   return {
-    x1: region.latitude - (region.latitudeDelta/2),
-    x2: region.latitude + (region.latitudeDelta/2),
-    y1: region.longitude - (region.longitudeDelta/2),
-    y2: region.longitude + (region.longitudeDelta/2),
+    x1: region.longitude + (region.longitudeDelta/2),
+    x2: region.longitude - (region.longitudeDelta/2),
+    y1: region.latitude - (region.latitudeDelta/2),
+    y2: region.latitude + (region.latitudeDelta/2)
   }
 
 }

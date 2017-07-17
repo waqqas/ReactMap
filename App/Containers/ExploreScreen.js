@@ -30,26 +30,38 @@ class ExploreScreen extends Component {
       })
     }
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
+    this.onRegionChange = this.onRegionChange.bind(this)
+  }
+
+  onRegionChange(region) {
+    this.setState({region})
   }
 
   onRegionChangeComplete(region) {
-    console.log('coordinates: ', getCoordinatesFromRegion(region))
     this.props.getPoints(getCoordinatesFromRegion(region))
   }
 
   render() {
-    console.log('points: ', this.props.points)
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
-                 initialRegion={this.state.region}
+                 region={this.state.region}
+                 onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
-          {this.props.points.map((point, i) => (
-            <MapView.Marker
-              key={i}
-              coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
-            />
-          ))}
+          {this.props.points.map((point, i) => {
+
+            if (point.centroid_lat !== 0 && point.centroid_lon !== 0) {
+              return (<MapView.Marker
+                  key={i}
+                  coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
+                >
+                  <MapView.Callout>
+                    <View></View>
+                  </MapView.Callout>
+                </MapView.Marker>
+              )
+            }
+          })}
         </MapView>
       </View>
     )
