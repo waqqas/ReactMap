@@ -2,12 +2,15 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
+import {connect} from "react-redux";
 import _ from "lodash";
 // Styles
-import AppConfig from "../Config/AppConfig";
 import styles from "./Styles/ExploreScreenStyles";
+import ExploreActions from "../Redux/ExploreRedux";
+import {getCoordinatesFromRegion} from "../Lib/Map";
+import AppConfig from "../Config/AppConfig";
 
-export default class ExploreScreen extends Component {
+class ExploreScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
     title: 'Explore',
@@ -19,37 +22,32 @@ export default class ExploreScreen extends Component {
   constructor(props) {
     super(props)
 
+
     this.state = {
       region: _.mergeWith(AppConfig.initialCoordinate, {
         latitudeDelta: 0.1,
         longitudeDelta: 0.1
-      }),
-      markers: [
-        {
-          key: 1,
-          coordinate: AppConfig.initialCoordinate
-        }
-      ]
+      })
     }
-
-    this.onRegionChange = this.onRegionChange.bind(this)
-
+    this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
   }
 
-  onRegionChange(region) {
-    this.setState({region});
+  onRegionChangeComplete(region) {
+    console.log('coordinates: ', getCoordinatesFromRegion(region))
+    this.props.getPoints(getCoordinatesFromRegion(region))
   }
 
   render() {
+    console.log('points: ', this.props.points)
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
-                 region={this.state.region}
-                 onRegionChange={this.onRegionChange}>
-          {this.state.markers.map(marker => (
+                 initialRegion={this.state.region}
+                 onRegionChangeComplete={this.onRegionChangeComplete}>
+          {this.props.points.map((point, i) => (
             <MapView.Marker
-              key={marker.key}
-              coordinate={marker.coordinate}
+              key={i}
+              coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
             />
           ))}
         </MapView>
@@ -57,3 +55,16 @@ export default class ExploreScreen extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    points: state.explore.points
+  }
+}
+// wraps dispatch to create nicer functions to call within our component
+const mapDispatchToProps = (dispatch) => ({
+  getPoints: ({x1, x2, y1, y2}) => dispatch(ExploreActions.getPoints(x1, x2, y1, y2))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExploreScreen)
+

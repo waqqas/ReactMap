@@ -6,5 +6,8 @@ export default {
   initialCoordinate: {
     latitude: 29.00,
     longitude: -82.00
-  }
+  },
+  apiBaseUrl: 'https://api.fishory.com/fishory/',
+  defaultRadius: 0.0005,
+  defaultTypes: [2,4]
 }
