@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text} from "react-native";
+import {Text, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
@@ -31,6 +31,8 @@ class ExploreScreen extends Component {
     }
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
     this.onRegionChange = this.onRegionChange.bind(this)
+    this.onMarkerPress = this.onMarkerPress.bind(this)
+
   }
 
   onRegionChange(region) {
@@ -38,7 +40,27 @@ class ExploreScreen extends Component {
   }
 
   onRegionChangeComplete(region) {
+    // console.log('region: ', region)
     this.props.getPoints(getCoordinatesFromRegion(region))
+  }
+
+  onMarkerPress(event) {
+    // console.log('press: ', event)
+
+    const {id, coordinate} = event.nativeEvent
+
+    // zoom a little
+    const latitudeDelta = (this.state.region.latitudeDelta - AppConfig.zoomDelta < 0) ? 0 : (this.state.region.latitudeDelta - AppConfig.zoomDelta)
+    const longitudeDelta = (this.state.region.longitudeDelta - AppConfig.zoomDelta < 0) ? 0 : (this.state.region.longitudeDelta - AppConfig.zoomDelta)
+
+    // point.json.id is assigned to non-clusters
+    if (id === 'unknown') {
+      this.setState({
+        region: _.mergeWith(coordinate, {latitudeDelta, longitudeDelta})
+      })
+      event.preventDefault()
+    }
+
   }
 
   render() {
@@ -49,9 +71,7 @@ class ExploreScreen extends Component {
                  onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {
-
-            console.log('pt: ', point)
-
+            // console.log('pt: ', point)
             if (point.centroid_lat !== 0 && point.centroid_lon !== 0) {
               let pinColor = AppConfig.defaultPinColor
               let showCallout = true
@@ -70,7 +90,9 @@ class ExploreScreen extends Component {
               }
               return (<MapView.Marker
                   key={i}
+                  identifier={point.json && point.json.id.toString()}
                   pinColor={pinColor}
+                  onPress={this.onMarkerPress}
                   coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
                 >
                   {showCallout && <MapView.Callout>

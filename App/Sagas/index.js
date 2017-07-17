@@ -1,4 +1,4 @@
-import {takeLatest} from "redux-saga/effects";
+import {takeLatest, throttle} from "redux-saga/effects";
 import API from "../Services/Api";
 import FixtureAPI from "../Services/FixtureApi";
 import DebugConfig from "../Config/DebugConfig";
@@ -6,6 +6,7 @@ import {StartupTypes} from "../Redux/StartupRedux";
 import {ExploreTypes} from "../Redux/ExploreRedux";
 import {startup} from "./StartupSagas";
 import {getPoints} from "./ExploreSagas";
+import AppConfig from '../Config/AppConfig'
 
 /* ------------- Types ------------- */
 
@@ -24,6 +25,6 @@ export default function * root() {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
 
-    takeLatest(ExploreTypes.GET_POINTS, getPoints, api)
+    throttle(AppConfig.throttleDelay, ExploreTypes.GET_POINTS, getPoints, api)
   ]
 }
