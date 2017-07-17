@@ -9,5 +9,9 @@ export default {
   },
   apiBaseUrl: 'https://api.fishory.com/fishory/',
   defaultRadius: 0.0005,
-  defaultTypes: [2,4]
+  defaultTypes: [2,4],
+  defaultPinColor: 'blue',
+  clusterPinColor: 'yellow',
+  ptTypeTwoColor: 'red',
+  ptTypeFourColor: 'green',
 }
