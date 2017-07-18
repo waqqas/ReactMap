@@ -15,5 +15,26 @@ export default {
   ptTypeTwoColor: 'red',
   ptTypeFourColor: 'green',
   clusterZoomFactor: 0.9,
-  throttleDelay:1000
+  throttleDelay:1000,
+  mapTileSize: 256,
+  zoomLevelToRadius:[0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1, //10
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005,
+    0.0005 ] // and so on up to 20
 }

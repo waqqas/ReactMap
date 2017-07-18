@@ -7,7 +7,6 @@ import _ from "lodash";
 // Styles
 import styles from "./Styles/ExploreScreenStyles";
 import ExploreActions from "../Redux/ExploreRedux";
-import {getCoordinatesFromRegion} from "../Lib/Map";
 import AppConfig from "../Config/AppConfig";
 
 class ExploreScreen extends Component {
@@ -41,7 +40,7 @@ class ExploreScreen extends Component {
 
   onRegionChangeComplete(region) {
     // console.log('region: ', region)
-    this.props.getPoints(getCoordinatesFromRegion(region))
+    this.props.getPoints(region)
   }
 
   onMarkerPress(event) {
@@ -88,7 +87,7 @@ class ExploreScreen extends Component {
 
             return (<MapView.Marker
               key={i}
-              identifier={point.json && point.json.id ? point.json.id.toString(): 'unknown'}
+              identifier={point.json && point.json.id ? point.json.id.toString() : 'unknown'}
               pinColor={pinColor}
               onPress={this.onMarkerPress}
               coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
@@ -111,7 +110,7 @@ const mapStateToProps = (state) => {
 }
 // wraps dispatch to create nicer functions to call within our component
 const mapDispatchToProps = (dispatch) => ({
-  getPoints: ({x1, x2, y1, y2}) => dispatch(ExploreActions.getPoints(x1, x2, y1, y2))
+  getPoints: (region) => dispatch(ExploreActions.getPoints(region))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExploreScreen)
