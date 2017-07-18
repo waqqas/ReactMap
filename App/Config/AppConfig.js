@@ -14,6 +14,6 @@ export default {
   clusterPinColor: 'yellow',
   ptTypeTwoColor: 'red',
   ptTypeFourColor: 'green',
-  zoomDelta: 0.1,
+  clusterZoomFactor: 0.9,
   throttleDelay:1000
 }

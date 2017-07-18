@@ -50,15 +50,14 @@ class ExploreScreen extends Component {
     const {id, coordinate} = event.nativeEvent
 
     // zoom a little
-    const latitudeDelta = (this.state.region.latitudeDelta - AppConfig.zoomDelta < 0) ? 0 : (this.state.region.latitudeDelta - AppConfig.zoomDelta)
-    const longitudeDelta = (this.state.region.longitudeDelta - AppConfig.zoomDelta < 0) ? 0 : (this.state.region.longitudeDelta - AppConfig.zoomDelta)
+    const latitudeDelta = (this.state.region.latitudeDelta * AppConfig.clusterZoomFactor)
+    const longitudeDelta = (this.state.region.longitudeDelta * AppConfig.clusterZoomFactor)
+
+    const region = _.mergeWith(coordinate, {latitudeDelta, longitudeDelta})
 
     // point.json.id is assigned to non-clusters
     if (id === 'unknown') {
-      this.setState({
-        region: _.mergeWith(coordinate, {latitudeDelta, longitudeDelta})
-      })
-      event.preventDefault()
+      this.setState({region})
     }
 
   }
@@ -67,6 +66,7 @@ class ExploreScreen extends Component {
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
+                 ref='map'
                  region={this.state.region}
                  onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
@@ -75,31 +75,30 @@ class ExploreScreen extends Component {
             if (point.centroid_lat !== 0 && point.centroid_lon !== 0) {
               let pinColor = AppConfig.defaultPinColor
               let showCallout = true
-              if(point.point_count > 1){
+              if (point.point_count > 1) {
                 // cluster
                 pinColor = AppConfig.clusterPinColor
                 showCallout = false
               }
-              else{
-                if( point.types.indexOf(2) !== -1){
-                  pinColor = AppConfig.ptTypeTwoColor
-                }
-                else if( point.types.indexOf(4) !== -1){
-                  pinColor = AppConfig.ptTypeFourColor
-                }
+              else if (point.types.indexOf(2) !== -1) {
+                pinColor = AppConfig.ptTypeTwoColor
               }
+              else if (point.types.indexOf(4) !== -1) {
+                pinColor = AppConfig.ptTypeFourColor
+              }
+
               return (<MapView.Marker
-                  key={i}
-                  identifier={point.json && point.json.id.toString()}
-                  pinColor={pinColor}
-                  onPress={this.onMarkerPress}
-                  coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
-                >
-                  {showCallout && <MapView.Callout>
-                    <View><Text>{point.json.name}</Text></View>
-                  </MapView.Callout>}
-                </MapView.Marker>
-              )
+                key={i}
+                identifier={point.json && point.json.id.toString()}
+                pinColor={pinColor}
+                onPress={this.onMarkerPress}
+                coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
+              >
+                {showCallout && <MapView.Callout>
+                  <View><Text>{point.json.name}</Text></View>
+                </MapView.Callout>}
+              </MapView.Marker>)
+
             }
           })}
         </MapView>
