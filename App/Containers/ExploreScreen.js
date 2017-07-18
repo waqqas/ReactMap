@@ -72,34 +72,31 @@ class ExploreScreen extends Component {
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {
             // console.log('pt: ', point)
-            if (point.centroid_lat !== 0 && point.centroid_lon !== 0) {
-              let pinColor = AppConfig.defaultPinColor
-              let showCallout = true
-              if (point.point_count > 1) {
-                // cluster
-                pinColor = AppConfig.clusterPinColor
-                showCallout = false
-              }
-              else if (point.types.indexOf(2) !== -1) {
-                pinColor = AppConfig.ptTypeTwoColor
-              }
-              else if (point.types.indexOf(4) !== -1) {
-                pinColor = AppConfig.ptTypeFourColor
-              }
-
-              return (<MapView.Marker
-                key={i}
-                identifier={point.json && point.json.id.toString()}
-                pinColor={pinColor}
-                onPress={this.onMarkerPress}
-                coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
-              >
-                {showCallout && <MapView.Callout>
-                  <View><Text>{point.json.name}</Text></View>
-                </MapView.Callout>}
-              </MapView.Marker>)
-
+            let pinColor = AppConfig.defaultPinColor
+            let showCallout = true
+            if (point.point_count > 1) {
+              // cluster
+              pinColor = AppConfig.clusterPinColor
+              showCallout = false
             }
+            else if (point.types.indexOf(2) !== -1) {
+              pinColor = AppConfig.ptTypeTwoColor
+            }
+            else if (point.types.indexOf(4) !== -1) {
+              pinColor = AppConfig.ptTypeFourColor
+            }
+
+            return (<MapView.Marker
+              key={i}
+              identifier={point.json && point.json.id ? point.json.id.toString(): 'unknown'}
+              pinColor={pinColor}
+              onPress={this.onMarkerPress}
+              coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
+            >
+              {showCallout && <MapView.Callout>
+                <View><Text>{point.json.name}</Text></View>
+              </MapView.Callout>}
+            </MapView.Marker>)
           })}
         </MapView>
       </View>
