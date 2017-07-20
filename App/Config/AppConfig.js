@@ -3,9 +3,11 @@
 export default {
   // font scaling override - RN default is on
   allowTextFontScaling: true,
-  initialCoordinate: {
+  initialRegion: {
     latitude: 29.00,
-    longitude: -82.00
+    longitude: -82.00,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1
   },
   apiBaseUrl: 'https://api.fishory.com/fishory/',
   defaultRadius: 0.0005,
@@ -14,7 +16,7 @@ export default {
   clusterPinColor: 'yellow',
   ptTypeTwoColor: 'red',
   ptTypeFourColor: 'green',
-  clusterZoomFactor: 0.9,
+  clusterZoomFactor: 0.6,
   throttleDelay:1000,
   mapTileSize: 256,
   zoomLevelToRadius:[0.1,

@@ -21,13 +21,6 @@ class ExploreScreen extends Component {
   constructor(props) {
     super(props)
 
-
-    this.state = {
-      region: _.mergeWith(AppConfig.initialCoordinate, {
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1
-      })
-    }
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
     this.onRegionChange = this.onRegionChange.bind(this)
     this.onMarkerPress = this.onMarkerPress.bind(this)
@@ -35,7 +28,7 @@ class ExploreScreen extends Component {
   }
 
   onRegionChange(region) {
-    this.setState({region})
+    this.props.setRegion(region)
   }
 
   onRegionChangeComplete(region) {
@@ -49,8 +42,8 @@ class ExploreScreen extends Component {
     const {id, coordinate} = event.nativeEvent
 
     // zoom a little
-    const latitudeDelta = (this.state.region.latitudeDelta * AppConfig.clusterZoomFactor)
-    const longitudeDelta = (this.state.region.longitudeDelta * AppConfig.clusterZoomFactor)
+    const latitudeDelta = (this.props.region.latitudeDelta * AppConfig.clusterZoomFactor)
+    const longitudeDelta = (this.props.region.longitudeDelta * AppConfig.clusterZoomFactor)
 
     const region = _.mergeWith(coordinate, {latitudeDelta, longitudeDelta})
 
@@ -61,12 +54,20 @@ class ExploreScreen extends Component {
 
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.region !== this.props.region)
+  //     this.refs.map.animateToCoordinate({
+  //       latitude: nextProps.region.latitude,
+  //       longitude: nextProps.region.longitude
+  //     }, 1)
+  // }
+
   render() {
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
                  ref='map'
-                 region={this.state.region}
+                 region={this.props.region}
                  onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {
@@ -105,12 +106,14 @@ class ExploreScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    points: state.explore.points
+    points: state.explore.points,
+    region: state.explore.region
   }
 }
 // wraps dispatch to create nicer functions to call within our component
 const mapDispatchToProps = (dispatch) => ({
-  getPoints: (region) => dispatch(ExploreActions.getPoints(region))
+  getPoints: (region) => dispatch(ExploreActions.getPoints(region)),
+  setRegion: (region) => dispatch(ExploreActions.setRegion(region))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExploreScreen)

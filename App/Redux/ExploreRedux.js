@@ -1,12 +1,15 @@
-import { createReducer, createActions } from 'reduxsauce'
-import Immutable from 'seamless-immutable'
+import {createActions, createReducer} from "reduxsauce";
+import Immutable from "seamless-immutable";
+import _ from "lodash";
+import AppConfig from "../Config/AppConfig";
 
 /* ------------- Types and Action Creators ------------- */
 
-const { Types, Creators } = createActions({
+const {Types, Creators} = createActions({
   getPoints: ['region'],
   getPointsSuccess: ['response'],
   getPointsFailure: ['response'],
+  setRegion: ['region'],
 })
 
 export const ExploreTypes = Types
@@ -16,27 +19,31 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   points: [],
+  region: AppConfig.initialRegion,
   fetching: null,
   error: null
 })
 
 /* ------------- Reducers ------------- */
 
-export const getPoints = (state, { username }) =>
-  state.merge({ fetching: true, username, avatar: null })
+export const getPoints = (state) =>
+  state.merge({fetching: true})
 
 export const getPointsSuccess = (state, {response}) => {
-  const { points } = response.data
-  return state.merge({ fetching: false, error: null, points })
+  const {points} = response.data
+  return state.merge({fetching: false, error: null, points})
 }
 
 export const getPointsFailure = (state) =>
-  state.merge({ fetching: false, error: true, points: [] })
+  state.merge({fetching: false, error: true, points: []})
 
+export const setRegion = (state, {region}) =>
+  state.merge({region})
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_POINTS]: getPoints,
   [Types.GET_POINTS_SUCCESS]: getPointsSuccess,
-  [Types.GET_POINTS_FAILURE]: getPointsFailure
+  [Types.GET_POINTS_FAILURE]: getPointsFailure,
+  [Types.SET_REGION]: setRegion
 })
