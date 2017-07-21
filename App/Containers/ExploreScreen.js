@@ -40,28 +40,23 @@ class ExploreScreen extends Component {
   onMarkerPress(point) {
     console.log('point: ', point)
 
-    // zoom a little
-    const latitudeDelta = (this.props.region.latitudeDelta * AppConfig.clusterZoomFactor)
-    const longitudeDelta = (this.props.region.longitudeDelta * AppConfig.clusterZoomFactor)
-
-    const region = _.mergeWith({latitude: point.centroid_lat, longitude: point.centroid_lon}, {
-      latitudeDelta,
-      longitudeDelta
-    })
-
+    // zoom to cluster
     if (point.point_count > 1) {
+      const latitudeDelta = (this.props.region.latitudeDelta * AppConfig.clusterZoomFactor)
+      const longitudeDelta = (this.props.region.longitudeDelta * AppConfig.clusterZoomFactor)
+
+      const region = _.mergeWith({latitude: point.centroid_lat, longitude: point.centroid_lon}, {
+        latitudeDelta,
+        longitudeDelta
+      })
+
       this.props.setRegion(region)
+    }
+    else {
+      // show callout
     }
 
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.region !== this.props.region)
-  //     this.refs.map.animateToCoordinate({
-  //       latitude: nextProps.region.latitude,
-  //       longitude: nextProps.region.longitude
-  //     }, 1)
-  // }
 
   render() {
     return (

@@ -21,7 +21,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   points: [],
   region: AppConfig.initialRegion,
-  fetching: null,
+  fetching: false,
   error: null
 })
 
