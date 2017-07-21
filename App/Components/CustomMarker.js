@@ -13,6 +13,10 @@ export default class CustomMarker extends Component {
     pinColor: AppConfig.defaultPinColor
   }
 
+  static propTypes = {
+    point: React.PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props)
 
@@ -21,6 +25,7 @@ export default class CustomMarker extends Component {
     }
 
     this.onLayout = this.onLayout.bind(this)
+    this.showCallout = this.showCallout.bind(this)
   }
 
   onLayout(event) {
@@ -29,11 +34,15 @@ export default class CustomMarker extends Component {
     this.refs.marker.hideCallout()
   }
 
+  showCallout() {
+    this.refs.marker.showCallout()
+  }
+
   render() {
     const {point} = this.props
 
     const title = (point.json && point.json.name) ? point.json.name : null
-    let pinText = '   '
+    let pinText = '  '
 
     if (point.point_count > 1000000) {
       pinText = '1M+'
@@ -44,13 +53,22 @@ export default class CustomMarker extends Component {
     }
 
     return (
-      <MapView.Marker title={title} ref='marker' coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
-        <TouchableOpacity onLayout={this.onLayout} onPress={this.props.onPress.bind(this, point, this)}>
-          <View style={[styles.circle, {backgroundColor: this.props.pinColor}]}>
-            <Text style={styles.pinText}>{pinText}</Text>
-          </View>
-        </TouchableOpacity>
-      </MapView.Marker>
+      <View>
+        <MapView.Marker ref='marker'
+                        coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
+          <TouchableOpacity onLayout={this.onLayout} onPress={this.props.onPress.bind(this, point, this)}>
+            <View style={[styles.circle, {backgroundColor: this.props.pinColor}]}>
+              <Text style={styles.pinText}>{pinText}</Text>
+            </View>
+          </TouchableOpacity>
+          <MapView.Callout tooltip>
+            <View style={styles.callOut}>
+              <Text style={styles.callOutText}>{title}</Text>
+            </View>
+          </MapView.Callout>
+
+        </MapView.Marker>
+      </View>
     )
   }
 }

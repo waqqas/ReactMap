@@ -53,6 +53,9 @@ class ExploreScreen extends Component {
 
       this.props.setRegion(region)
     }
+    else{
+      marker.showCallout()
+    }
   }
 
   render() {
