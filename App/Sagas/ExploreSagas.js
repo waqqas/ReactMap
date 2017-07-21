@@ -31,7 +31,9 @@ export function * getPoints(api, action) {
     y1: point.y1,
     y2: point.y2
   }
-  // make the call to the api
+
+  // yield put(ExploreActions.resetPoints())
+
   const response = yield call(api.getPoiByBbox, data)
 
   if (response.ok) {

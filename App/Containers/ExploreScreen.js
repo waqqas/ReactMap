@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, View} from "react-native";
+import {View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
@@ -8,6 +8,7 @@ import _ from "lodash";
 import styles from "./Styles/ExploreScreenStyles";
 import ExploreActions from "../Redux/ExploreRedux";
 import AppConfig from "../Config/AppConfig";
+import CustomMarker from "../Components/CustomMarker";
 
 class ExploreScreen extends Component {
 
@@ -36,20 +37,20 @@ class ExploreScreen extends Component {
     this.props.getPoints(region)
   }
 
-  onMarkerPress(event) {
-    // console.log('press: ', event)
-
-    const {id, coordinate} = event.nativeEvent
+  onMarkerPress(point) {
+    console.log('point: ', point)
 
     // zoom a little
     const latitudeDelta = (this.props.region.latitudeDelta * AppConfig.clusterZoomFactor)
     const longitudeDelta = (this.props.region.longitudeDelta * AppConfig.clusterZoomFactor)
 
-    const region = _.mergeWith(coordinate, {latitudeDelta, longitudeDelta})
+    const region = _.mergeWith({latitude: point.centroid_lat, longitude: point.centroid_lon}, {
+      latitudeDelta,
+      longitudeDelta
+    })
 
-    // point.json.id is assigned to non-clusters
-    if (id === 'unknown') {
-      this.setState({region})
+    if (point.point_count > 1) {
+      this.props.setRegion(region)
     }
 
   }
@@ -71,11 +72,9 @@ class ExploreScreen extends Component {
                  onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {
-            // console.log('pt: ', point)
             let pinColor = AppConfig.defaultPinColor
             let showCallout = true
             if (point.point_count > 1) {
-              // cluster
               pinColor = AppConfig.clusterPinColor
               showCallout = false
             }
@@ -86,16 +85,10 @@ class ExploreScreen extends Component {
               pinColor = AppConfig.ptTypeFourColor
             }
 
-            return (<MapView.Marker
-              key={i}
-              identifier={point.json && point.json.id ? point.json.id.toString() : 'unknown'}
-              pinColor={pinColor}
-              onPress={this.onMarkerPress}
-              coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}
-            >
-              {showCallout && <MapView.Callout>
-                <View><Text>{point.json.name}</Text></View>
-              </MapView.Callout>}
+            console.log('pt: ', i, point)
+
+            return (<MapView.Marker key={ 'pt-' + (i + 1)} coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
+              <CustomMarker pinColor={pinColor} point={point} onPress={this.onMarkerPress}/>
             </MapView.Marker>)
           })}
         </MapView>

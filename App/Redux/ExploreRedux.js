@@ -10,6 +10,7 @@ const {Types, Creators} = createActions({
   getPointsSuccess: ['response'],
   getPointsFailure: ['response'],
   setRegion: ['region'],
+  resetPoints: null
 })
 
 export const ExploreTypes = Types
@@ -37,13 +38,15 @@ export const getPointsSuccess = (state, {response}) => {
 export const getPointsFailure = (state) =>
   state.merge({fetching: false, error: true, points: []})
 
-export const setRegion = (state, {region}) =>
-  state.merge({region})
+export const setRegion = (state, {region}) => state.merge({region})
+
+export const resetPoints = (state) => state.merge({points:[]})
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_POINTS]: getPoints,
   [Types.GET_POINTS_SUCCESS]: getPointsSuccess,
   [Types.GET_POINTS_FAILURE]: getPointsFailure,
-  [Types.SET_REGION]: setRegion
+  [Types.SET_REGION]: setRegion,
+  [Types.RESET_POINTS]: resetPoints
 })
