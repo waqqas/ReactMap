@@ -54,7 +54,7 @@ export default class CustomMarker extends Component {
 
     return (
       <View>
-        <MapView.Marker ref='marker'
+        <MapView.Marker title={title} ref='marker'
                         coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
           <TouchableOpacity onLayout={this.onLayout} onPress={this.props.onPress.bind(this, point, this)}>
             <View style={[styles.circle, {backgroundColor: this.props.pinColor}]}>
@@ -62,11 +62,7 @@ export default class CustomMarker extends Component {
             </View>
           </TouchableOpacity>
           <MapView.Callout tooltip>
-            <View style={styles.callOut}>
-              <Text style={styles.callOutText}>{title}</Text>
-            </View>
           </MapView.Callout>
-
         </MapView.Marker>
       </View>
     )

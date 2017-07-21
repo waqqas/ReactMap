@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {View, Alert} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
@@ -54,7 +54,12 @@ class ExploreScreen extends Component {
       this.props.setRegion(region)
     }
     else{
-      marker.showCallout()
+      // marker.showCallout()
+
+      Alert.alert(
+        'Name',
+        point.json.name,
+      )
     }
   }
 
