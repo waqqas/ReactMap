@@ -35,12 +35,12 @@ export const getPointsSuccess = (state, {response}) => {
   return state.merge({fetching: false, error: null, points})
 }
 
-export const getPointsFailure = (state) =>
-  state.merge({fetching: false, error: true, points: []})
+export const getPointsFailure = (state) => state.merge({fetching: false, error: true, points: []})
 
 export const setRegion = (state, {region}) => state.merge({region})
 
 export const resetPoints = (state) => state.merge({points:[]})
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {

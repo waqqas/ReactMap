@@ -37,8 +37,9 @@ class ExploreScreen extends Component {
     this.props.getPoints(region)
   }
 
-  onMarkerPress(point) {
-    console.log('point: ', point)
+  onMarkerPress(point, marker) {
+    // console.log('point: ', point)
+    // console.log('marker: ', marker)
 
     // zoom to cluster
     if (point.point_count > 1) {
@@ -52,10 +53,6 @@ class ExploreScreen extends Component {
 
       this.props.setRegion(region)
     }
-    else {
-      // show callout
-    }
-
   }
 
   render() {
@@ -68,10 +65,8 @@ class ExploreScreen extends Component {
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {
             let pinColor = AppConfig.defaultPinColor
-            let showCallout = true
             if (point.point_count > 1) {
               pinColor = AppConfig.clusterPinColor
-              showCallout = false
             }
             else if (point.types.indexOf(2) !== -1) {
               pinColor = AppConfig.ptTypeTwoColor
@@ -79,12 +74,11 @@ class ExploreScreen extends Component {
             else if (point.types.indexOf(4) !== -1) {
               pinColor = AppConfig.ptTypeFourColor
             }
+            // console.log('pt: ', i, point)
 
-            console.log('pt: ', i, point)
-
-            return (<MapView.Marker key={ 'pt-' + (i + 1)} coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
-              <CustomMarker pinColor={pinColor} point={point} onPress={this.onMarkerPress}/>
-            </MapView.Marker>)
+            return (
+              <CustomMarker key={'pt-' + i} pinColor={pinColor} point={point} onPress={this.onMarkerPress}/>
+            )
           })}
         </MapView>
       </View>
@@ -98,7 +92,7 @@ const mapStateToProps = (state) => {
     region: state.explore.region
   }
 }
-// wraps dispatch to create nicer functions to call within our component
+
 const mapDispatchToProps = (dispatch) => ({
   getPoints: (region) => dispatch(ExploreActions.getPoints(region)),
   setRegion: (region) => dispatch(ExploreActions.setRegion(region))
