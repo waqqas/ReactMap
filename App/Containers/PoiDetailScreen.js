@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {View, WebView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
 // Styles
@@ -19,8 +19,10 @@ class ExploreScreen extends Component {
   }
 
   render() {
+    const {point} = this.props
     return (
       <View style={styles.mainContainer}>
+        <WebView source={{uri: `https://fishory.com/services/poi-detail.php?id=${point.json.id}`}}/>
       </View>
     )
   }
