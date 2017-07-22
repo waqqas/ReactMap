@@ -15,7 +15,7 @@ const create = (baseURL = AppConfig.apiBaseUrl) => {
     timeout: 10000
   })
 
-  const getPoiByBbox = (data) => {console.log('data:' , data); return api.post('getPoiByBbox', data)}
+  const getPoiByBbox = (data) => api.post('getPoiByBbox', data)
 
   return {
     getPoiByBbox

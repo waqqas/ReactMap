@@ -46,7 +46,7 @@ const PrimaryNav = StackNavigator({
       screen: MainNav
     }
   }, {
-    headerMode: 'none',
+    headerMode: 'float',
     initialRouteName: 'splash',
   }
 )

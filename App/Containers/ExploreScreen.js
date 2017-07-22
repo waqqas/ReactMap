@@ -11,7 +11,7 @@ import ExploreActions from "../Redux/ExploreRedux";
 import AppActions from "../Redux/AppRedux";
 import AppConfig from "../Config/AppConfig";
 import CustomMarker from "../Components/CustomMarker";
-import {Colors, Fonts, Images} from "../Themes";
+import {Colors, Fonts, Images, Metrics} from "../Themes";
 
 class ExploreScreen extends Component {
 
@@ -28,17 +28,14 @@ class ExploreScreen extends Component {
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
     this.onRegionChange = this.onRegionChange.bind(this)
     this.onMarkerPress = this.onMarkerPress.bind(this)
-    this.onTapped = this.onTapped.bind(this)
   }
 
   onRegionChange(region) {
-    // console.log('onRegionChange: ', region)
     this.props.selectPoint(null)
     this.props.setRegion(region)
   }
 
   onRegionChangeComplete(region) {
-    // console.log('onRegionChangeComplete: ', region)
     this.props.setRegion(region)
     this.props.getPoints(region)
   }
@@ -50,9 +47,6 @@ class ExploreScreen extends Component {
   onMarkerPress(point, marker) {
     // console.log('point: ', point)
     // console.log('marker: ', marker)
-
-    // MessageBarManager.hideAlert()
-
 
     // zoom to cluster
     if (point.point_count > 1) {
@@ -78,11 +72,6 @@ class ExploreScreen extends Component {
       this.props.selectPoint(point)
 
     }
-  }
-
-  onTapped() {
-    const {navigate} = this.props.navigation
-    navigate('detail')
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -182,25 +171,6 @@ class ExploreScreen extends Component {
 
     return (
       <View style={styles.mainContainer}>
-        {point && <TouchableWithoutFeedback onPress={this.onTapped} style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-          <View style={{flexDirection: 'row'}}>
-            <Image source={icon}
-                   style={{height: 40, width: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}/>
-            <View>
-              <Text style={{
-                color: Colors.black,
-                fontSize: Fonts.size.regular,
-                backgroundColor: Colors.transparent
-              }}>{this.props.point.json.name}</Text>
-              <Text style={{
-                color: Colors.black,
-                fontSize: Fonts.size.medium,
-                backgroundColor: Colors.transparent
-              }}>{message}</Text>
-            </View>
-            <EvilIcon name='chevron-right' size={40}/>
-          </View>
-        </TouchableWithoutFeedback>}
         <MapView style={styles.map}
                  ref='map'
                  region={this.props.region}
@@ -225,6 +195,24 @@ class ExploreScreen extends Component {
             )
           })}
         </MapView>
+        {point && <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('detail')} style={{position: 'absolute', top: Metrics.navBarHeight, left: 0, right: 0, bottom: 0}}>
+          <View style={{flexDirection: 'row', backgroundColor: Colors.silver, justifyContent: 'space-around', alignItems: 'center', paddingTop: Metrics.marginVertical, paddingBottom: Metrics.marginVertical}}>
+            <Image source={icon} style={{height: 40, width: 40}}/>
+            <View style={{ flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10 }}>
+              <Text numberOfLines={2}  style={{
+                color: Colors.black,
+                fontSize: Fonts.size.regular,
+                backgroundColor: Colors.transparent
+              }}>{this.props.point.json.name}</Text>
+              <Text style={{
+                color: Colors.black,
+                fontSize: Fonts.size.medium,
+                backgroundColor: Colors.transparent
+              }}>{message}</Text>
+            </View>
+            <EvilIcon name='chevron-right' size={40} style={{marginRight: Metrics.marginHorizontal}}/>
+          </View>
+        </TouchableWithoutFeedback>}
       </View>
     )
   }
