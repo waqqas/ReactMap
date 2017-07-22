@@ -44,6 +44,8 @@ class ExploreScreen extends Component {
     // console.log('point: ', point)
     // console.log('marker: ', marker)
 
+    MessageBarManager.hideAlert()
+
     // zoom to cluster
     if (point.point_count > 1) {
       const latitudeDelta = (this.props.region.latitudeDelta * AppConfig.clusterZoomFactor)
@@ -111,7 +113,7 @@ class ExploreScreen extends Component {
             marginTop: 10
           },
           messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
-          avatarStyle: {height: 40, width: 40, borderRadius: 20},
+          avatarStyle: {height: 40, width: 40, borderRadius: 20, justifyContent: 'center'},
           avatar: icon,
           onTapped: this.onTapped
         })
