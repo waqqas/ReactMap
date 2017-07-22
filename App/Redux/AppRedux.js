@@ -1,32 +1,28 @@
 import {createActions, createReducer} from "reduxsauce";
 import Immutable from "seamless-immutable";
+import AppConfig from "../Config/AppConfig";
 
 /* ------------- Types and Action Creators ------------- */
 
-const { Types, Creators } = createActions({
-  startup: null,
-  startupSuccess: null,
-  startupFailure: null
+const {Types, Creators} = createActions({
+  setRegion: ['region'],
 })
 
-export const StartupTypes = Types
+export const AppTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  success: false
+  region: AppConfig.initialRegion,
 })
 
 /* ------------- Reducers ------------- */
 
-export const startupSuccess = (state) => state.merge({success: true})
-
-export const startupFailure = (state) => state.merge({success: false})
+export const setRegion = (state, {region}) => state.merge({region})
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.STARTUP_SUCCESS]: startupSuccess,
-  [Types.STARTUP_FAILURE]: startupFailure
+  [Types.SET_REGION]: setRegion,
 })

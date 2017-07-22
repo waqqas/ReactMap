@@ -4,6 +4,7 @@ import ExploreScreen from "../Containers/ExploreScreen";
 import FavoritesScreen from "../Containers/FavoritesScreen";
 import SettingsScreen from "../Containers/SettingsScreen";
 import PoiDetailScreen from "../Containers/PoiDetailScreen";
+import SplashScreen from '../Containers/SplashScreen'
 
 import styles from "./Styles/NavigationStyles";
 
@@ -24,6 +25,7 @@ const MainNav = TabNavigator({
   },
 }, {
   headerMode: 'none',
+  tabBarPosition: 'bottom',
   initialRouteName: 'explore',
   navigationOptions: {
     headerStyle: styles.navBar
@@ -37,12 +39,15 @@ const PrimaryNav = StackNavigator({
         headerStyle: styles.navBar,
       }
     },
+    splash: {
+      screen: SplashScreen
+    },
     main: {
       screen: MainNav
     }
   }, {
-    headerMode: 'float',
-    initialRouteName: 'main',
+    headerMode: 'none',
+    initialRouteName: 'splash',
   }
 )
 

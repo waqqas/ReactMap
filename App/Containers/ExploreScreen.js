@@ -1,16 +1,17 @@
 import React, {Component} from "react";
-import {View} from "react-native";
+import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
 import _ from "lodash";
-import {MessageBarManager} from "react-native-message-bar";
+import EvilIcon from "react-native-vector-icons/EvilIcons";
 // Styles
 import styles from "./Styles/ExploreScreenStyles";
 import ExploreActions from "../Redux/ExploreRedux";
+import AppActions from "../Redux/AppRedux";
 import AppConfig from "../Config/AppConfig";
 import CustomMarker from "../Components/CustomMarker";
-import {Colors, Fonts, Images, Metrics} from "../Themes";
+import {Colors, Fonts, Images} from "../Themes";
 
 class ExploreScreen extends Component {
 
@@ -40,11 +41,16 @@ class ExploreScreen extends Component {
     this.props.getPoints(region)
   }
 
+  componentDidMount() {
+    this.props.getPoints(this.props.region)
+  }
+
   onMarkerPress(point, marker) {
     // console.log('point: ', point)
     // console.log('marker: ', marker)
 
-    MessageBarManager.hideAlert()
+    // MessageBarManager.hideAlert()
+
 
     // zoom to cluster
     if (point.point_count > 1) {
@@ -56,6 +62,7 @@ class ExploreScreen extends Component {
         longitudeDelta
       })
 
+      this.props.selectPoint(null)
       this.props.setRegion(region)
     }
     else {
@@ -76,12 +83,73 @@ class ExploreScreen extends Component {
     navigate('detail')
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.point) {
-      const {point} = nextProps
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.point) {
+  //     const {point} = nextProps
+  //
+  //     let message = ''
+  //     let icon = null
+  //     const types = _.intersection(point.types, [2, 4])
+  //
+  //     // if contains only type 2 in array then "Boat Ramp"
+  //     // if contains only type 4 in array then "Marina"
+  //     // if contains both type 2 and type 4 then "Boat Ramp / Marina"
+  //
+  //     if (types.length === 2) {
+  //       message = 'Boat Ramp / Marina'
+  //     }
+  //     else if (_.indexOf(types, 2) !== -1) {
+  //       message = 'Boat Ramp'
+  //     }
+  //     else if (_.indexOf(types, 4) !== -1) {
+  //       message = 'Marina'
+  //     }
+  //
+  //     // if it contains a 2 it would get the "Ramp" icon
+  //     // if it contains a 4 and not a 2 it would get the "Anchor" icon
+  //     if (_.indexOf(types, 2) !== -1) {
+  //       icon = Images.boatRamp
+  //     }
+  //     else if (_.indexOf(types, 4) !== -1) {
+  //       icon = Images.anchor
+  //     }
+  //
+  //     MessageBarManager.showAlert({
+  //       title: point.json.name,
+  //       message: message,
+  //       shouldHideAfterDelay: false,
+  //       alertType: 'extra',
+  //       duration: 3000,
+  //       titleNumberOfLines: 2,
+  //       viewTopOffset: Metrics.navBarHeight,
+  //       stylesheetExtra: {backgroundColor: Colors.silver, strokeColor: Colors.black},
+  //       titleStyle: {
+  //         color: Colors.black,
+  //         fontSize: Fonts.size.regular,
+  //         backgroundColor: Colors.transparent,
+  //         marginTop: 10
+  //       },
+  //       messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
+  //       avatarStyle: {height: 40, width: 40, borderRadius: 20, justifyContent: 'center'},
+  //       avatar: icon,
+  //       onTapped: this.onTapped,
+  //       // animationType: 'none',
+  //       position: 'right'
+  //     })
+  //   }
+  //   else {
+  //     MessageBarManager.hideAlert()
+  //   }
+  // }
 
-      let message = ''
-      let icon = null
+  render() {
+
+    const {point} = this.props
+    let message = ''
+    let icon = null
+
+    if (point) {
+
       const types = _.intersection(point.types, [2, 4])
 
       // if contains only type 2 in array then "Boat Ramp"
@@ -106,36 +174,31 @@ class ExploreScreen extends Component {
       else if (_.indexOf(types, 4) !== -1) {
         icon = Images.anchor
       }
-
-      MessageBarManager.showAlert({
-        title: point.json.name,
-        message: message,
-        shouldHideAfterDelay: false,
-        alertType: 'extra',
-        duration: 3000,
-        titleNumberOfLines: 2,
-        viewTopOffset: Metrics.navBarHeight,
-        stylesheetExtra: {backgroundColor: Colors.silver, strokeColor: Colors.black},
-        titleStyle: {
-          color: Colors.black,
-          fontSize: Fonts.size.regular,
-          backgroundColor: Colors.transparent,
-          marginTop: 10
-        },
-        messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
-        avatarStyle: {height: 40, width: 40, borderRadius: 20, justifyContent: 'center'},
-        avatar: icon,
-        onTapped: this.onTapped
-      })
     }
-    else {
-      MessageBarManager.hideAlert()
-    }
-  }
 
-  render() {
+    console.log('selected point:', point)
+
     return (
       <View style={styles.mainContainer}>
+        {point && <TouchableWithoutFeedback onPress={this.onTapped} style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={icon}
+                   style={{height: 40, width: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}/>
+            <View>
+              <Text style={{
+                color: Colors.black,
+                fontSize: Fonts.size.regular,
+                backgroundColor: Colors.transparent
+              }}>{this.props.point.json.name}</Text>
+              <Text style={{
+                color: Colors.black,
+                fontSize: Fonts.size.medium,
+                backgroundColor: Colors.transparent
+              }}>{message}</Text>
+            </View>
+            <EvilIcon name='chevron-right' size={40}/>
+          </View>
+        </TouchableWithoutFeedback>}
         <MapView style={styles.map}
                  ref='map'
                  region={this.props.region}
@@ -167,14 +230,14 @@ class ExploreScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     points: state.explore.points,
-    region: state.explore.region,
-    point: state.explore.selectedPoint
+    point: state.explore.selectedPoint,
+    region: state.app.region
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   getPoints: (region) => dispatch(ExploreActions.getPoints(region)),
-  setRegion: (region) => dispatch(ExploreActions.setRegion(region)),
+  setRegion: (region) => dispatch(AppActions.setRegion(region)),
   selectPoint: (point) => dispatch(ExploreActions.selectPoint(point))
 })
 
