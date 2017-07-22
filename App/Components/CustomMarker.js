@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import {Text, TouchableOpacity, View} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import MapView from "react-native-maps";
+import _ from 'lodash'
 
+import {Images} from "../Themes";
 import styles from "./Styles/CustomMarkerStyles";
 import AppConfig from "../Config/AppConfig";
 
@@ -44,12 +46,28 @@ export default class CustomMarker extends Component {
     const title = (point.json && point.json.name) ? point.json.name : null
     let pinText = '  '
 
+    let icon = null
+
     if (point.point_count > 1000000) {
       pinText = '1M+'
+    } else if (point.point_count > 100000) {
+      pinText = '100K+'
+    } else if (point.point_count > 10000) {
+      pinText = '10K+'
     } else if (point.point_count > 1000) {
       pinText = '1K+'
     } else if (point.point_count > 1) {
       pinText = point.point_count
+    }
+    else {
+      // non-cluster point
+      if( _.indexOf(point.types, 2) !== -1){
+        icon = Images.boatRamp
+
+      }
+      else if( _.indexOf(point.types, 4) !== -1){
+        icon = Images.anchor
+      }
     }
 
     return (
@@ -58,7 +76,8 @@ export default class CustomMarker extends Component {
                         coordinate={{latitude: point.centroid_lat, longitude: point.centroid_lon}}>
           <TouchableOpacity onLayout={this.onLayout} onPress={this.props.onPress.bind(this, point, this)}>
             <View style={[styles.circle, {backgroundColor: this.props.pinColor}]}>
-              <Text style={styles.pinText}>{pinText}</Text>
+              {point.point_count === 1 ? <Image source={icon} style={styles.pinImage}/> :
+                <Text style={styles.pinText}>{pinText}</Text>  }
             </View>
           </TouchableOpacity>
           <MapView.Callout tooltip>

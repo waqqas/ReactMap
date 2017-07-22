@@ -1,6 +1,6 @@
 import {StyleSheet} from "react-native";
 import {Colors} from "../../Themes/";
-import AppConfig from '../../Config/AppConfig'
+import AppConfig from "../../Config/AppConfig";
 
 export default StyleSheet.create({
   circle: {
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     paddingBottom: 2,
     backgroundColor: Colors.transparent
   },
-  callOut:{
+  callOut: {
     borderRadius: 4,
     backgroundColor: Colors.snow,
     borderWidth: 1,
@@ -34,6 +34,10 @@ export default StyleSheet.create({
     marginBottom: 5,
     marginTop: 5,
     width: 100
+  },
+  pinImage: {
+    height: 30,
+    width: 30
   }
 })
 
