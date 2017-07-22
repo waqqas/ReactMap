@@ -10,7 +10,7 @@ import styles from "./Styles/ExploreScreenStyles";
 import ExploreActions from "../Redux/ExploreRedux";
 import AppConfig from "../Config/AppConfig";
 import CustomMarker from "../Components/CustomMarker";
-import {Colors, Fonts, Images} from "../Themes";
+import {Colors, Fonts, Images, Metrics} from "../Themes";
 
 class ExploreScreen extends Component {
 
@@ -72,65 +72,64 @@ class ExploreScreen extends Component {
   }
 
   onTapped() {
-    const { navigate } = this.props.navigation
+    const {navigate} = this.props.navigation
     navigate('detail')
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.point !== this.props.point) {
-      if (nextProps.point) {
-        const {point} = nextProps
+    if (nextProps.point) {
+      const {point} = nextProps
 
-        let message = ''
-        let icon = null
-        const types = _.intersection(point.types, [2, 4])
+      let message = ''
+      let icon = null
+      const types = _.intersection(point.types, [2, 4])
 
-        // if contains only type 2 in array then "Boat Ramp"
-        // if contains only type 4 in array then "Marina"
-        // if contains both type 2 and type 4 then "Boat Ramp / Marina"
+      // if contains only type 2 in array then "Boat Ramp"
+      // if contains only type 4 in array then "Marina"
+      // if contains both type 2 and type 4 then "Boat Ramp / Marina"
 
-        if (types.length === 2) {
-          message = 'Boat Ramp / Marina'
-        }
-        else if (_.indexOf(types, 2) !== -1) {
-          message = 'Boat Ramp'
-        }
-        else if (_.indexOf(types, 4) !== -1) {
-          message = 'Marina'
-        }
-
-        // if it contains a 2 it would get the "Ramp" icon
-        // if it contains a 4 and not a 2 it would get the "Anchor" icon
-        if (_.indexOf(types, 2) !== -1) {
-          icon = Images.boatRamp
-        }
-        else if (_.indexOf(types, 4) !== -1) {
-          icon = Images.anchor
-        }
-
-        MessageBarManager.showAlert({
-          title: point.json.name,
-          message: message,
-          shouldHideAfterDelay: false,
-          alertType: 'extra',
-          duration: 3000,
-          titleNumberOfLines: 2,
-          stylesheetExtra: {backgroundColor: Colors.silver, strokeColor: Colors.black},
-          titleStyle: {
-            color: Colors.black,
-            fontSize: Fonts.size.regular,
-            backgroundColor: Colors.transparent,
-            marginTop: 10
-          },
-          messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
-          avatarStyle: {height: 40, width: 40, borderRadius: 20, justifyContent: 'center'},
-          avatar: icon,
-          onTapped: this.onTapped
-        })
+      if (types.length === 2) {
+        message = 'Boat Ramp / Marina'
       }
-      else {
-        MessageBarManager.hideAlert()
+      else if (_.indexOf(types, 2) !== -1) {
+        message = 'Boat Ramp'
       }
+      else if (_.indexOf(types, 4) !== -1) {
+        message = 'Marina'
+      }
+
+      // if it contains a 2 it would get the "Ramp" icon
+      // if it contains a 4 and not a 2 it would get the "Anchor" icon
+      if (_.indexOf(types, 2) !== -1) {
+        icon = Images.boatRamp
+      }
+      else if (_.indexOf(types, 4) !== -1) {
+        icon = Images.anchor
+      }
+
+      MessageBarManager.showAlert({
+        title: point.json.name,
+        message: message,
+        shouldHideAfterDelay: false,
+        alertType: 'extra',
+        duration: 3000,
+        titleNumberOfLines: 2,
+        viewTopOffset: Metrics.navBarHeight,
+        stylesheetExtra: {backgroundColor: Colors.silver, strokeColor: Colors.black},
+        titleStyle: {
+          color: Colors.black,
+          fontSize: Fonts.size.regular,
+          backgroundColor: Colors.transparent,
+          marginTop: 10
+        },
+        messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
+        avatarStyle: {height: 40, width: 40, borderRadius: 20, justifyContent: 'center'},
+        avatar: icon,
+        onTapped: this.onTapped
+      })
+    }
+    else {
+      MessageBarManager.hideAlert()
     }
   }
 

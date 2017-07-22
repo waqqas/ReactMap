@@ -22,7 +22,7 @@ class ExploreScreen extends Component {
     const {point} = this.props
     return (
       <View style={styles.mainContainer}>
-        <WebView source={{uri: `https://fishory.com/services/poi-detail.php?id=${point.json.id}`}}/>
+        <WebView source={{uri: `https://fishory.com/services/poi-detail.php?id=${point.json.id}&v=2`}}/>
       </View>
     )
   }
