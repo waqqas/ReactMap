@@ -83,6 +83,24 @@ const ApplicationStyles = {
       color: Colors.steel
     }
   },
+  navBar: {
+    navBarRightText: {
+      fontFamily: Fonts.type.base,
+      color: Colors.snow
+    },
+    navBarRightIcon: {
+      color: Colors.snow,
+      paddingRight: Metrics.marginHorizontal
+    },
+    navBarTitle:{
+      fontFamily: Fonts.type.bold,
+      color: Colors.snow
+    },
+    backTitleStyle: {
+      color: Colors.snow,
+      fontFamily: Fonts.type.base
+    }
+  }
 }
 
 export default ApplicationStyles

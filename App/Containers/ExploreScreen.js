@@ -1,14 +1,16 @@
 import React, {Component} from "react";
-import {View, Alert} from "react-native";
+import {View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
 import _ from "lodash";
+import {MessageBarManager} from "react-native-message-bar";
 // Styles
 import styles from "./Styles/ExploreScreenStyles";
 import ExploreActions from "../Redux/ExploreRedux";
 import AppConfig from "../Config/AppConfig";
 import CustomMarker from "../Components/CustomMarker";
+import {Colors, Fonts, Images} from "../Themes";
 
 class ExploreScreen extends Component {
 
@@ -25,7 +27,7 @@ class ExploreScreen extends Component {
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
     this.onRegionChange = this.onRegionChange.bind(this)
     this.onMarkerPress = this.onMarkerPress.bind(this)
-
+    this.onTapped = this.onTapped.bind(this)
   }
 
   onRegionChange(region) {
@@ -54,7 +56,7 @@ class ExploreScreen extends Component {
 
       this.props.setRegion(region)
     }
-    else{
+    else {
       // marker.showCallout()
 
       // Alert.alert(
@@ -64,6 +66,59 @@ class ExploreScreen extends Component {
 
       this.props.selectPoint(point)
 
+    }
+  }
+
+  onTapped() {
+    const { navigate } = this.props.navigation
+    navigate('detail')
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.point !== this.props.point) {
+      if (nextProps.point) {
+        const {point} = nextProps
+
+        let message = ''
+        let icon = null
+        const types = _.intersection(point.types, [2, 4])
+        if (types.length === 2) {
+          message = 'Boat Ramp / Marina'
+          icon = Images.boatRamp
+        }
+        else if (_.indexOf(types, 2) !== -1) {
+          message = 'Boat Ramp'
+          icon = Images.boatRamp
+
+        }
+        else if (_.indexOf(types, 4) !== -1) {
+          message = 'Marina'
+          icon = Images.anchor
+        }
+
+        MessageBarManager.showAlert({
+          title: point.json.name,
+          message: message,
+          shouldHideAfterDelay: false,
+          alertType: 'extra',
+          duration: 3000,
+          titleNumberOfLines: 2,
+          stylesheetExtra: {backgroundColor: Colors.silver, strokeColor: Colors.black},
+          titleStyle: {
+            color: Colors.black,
+            fontSize: Fonts.size.regular,
+            backgroundColor: Colors.transparent,
+            marginTop: 10
+          },
+          messageStyle: {color: Colors.black, fontSize: Fonts.size.medium, backgroundColor: Colors.transparent},
+          avatarStyle: {height: 40, width: 40, borderRadius: 20},
+          avatar: icon,
+          onTapped: this.onTapped
+        })
+      }
+      else {
+        MessageBarManager.hideAlert()
+      }
     }
   }
 
@@ -101,7 +156,8 @@ class ExploreScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     points: state.explore.points,
-    region: state.explore.region
+    region: state.explore.region,
+    point: state.explore.selectedPoint
   }
 }
 
