@@ -12,27 +12,22 @@ import styles from "./Styles/NavigationStyles";
 
 const MainNav = TabNavigator({
   search: {
-    routeName: 'search',
-    path: 'search',
+    // path: 'search',
     screen: SearchScreen
   },
   explore: {
-    routeName: 'explore',
-    path: 'explore',
+    // path: 'explore',
     screen: ExploreScreen
   },
   favorites: {
-    routeName: 'favorites',
-    path: 'favorites',
+    // path: 'favorites',
     screen: FavoritesScreen
   },
   settings: {
-    routeName: 'settings',
-    path: 'settings',
+    // path: 'settings',
     screen: SettingsScreen
   },
 }, {
-  // Default config for all screens
   headerMode: 'none',
   initialRouteName: 'explore',
   navigationOptions: {
@@ -42,8 +37,7 @@ const MainNav = TabNavigator({
 
 const PrimaryNav = StackNavigator({
     detail: {
-      routeName: 'detail',
-      path: 'detail',
+      // path: 'detail',
       screen: PoiDetailScreen,
       navigationOptions: {
         headerStyle: styles.navBar,
@@ -53,12 +47,11 @@ const PrimaryNav = StackNavigator({
       }
     },
     main: {
-      routeName: 'main',
-      path: 'main',
+      // path: 'main',
       screen: MainNav
     }
   }, {
-    headerMode: 'none',
+    headerMode: 'float',
     initialRouteName: 'main',
   }
 )
