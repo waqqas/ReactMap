@@ -29,6 +29,7 @@ class ExploreScreen extends Component {
   }
 
   onRegionChange(region) {
+    this.props.selectPoint(null)
     this.props.setRegion(region)
   }
 
@@ -56,10 +57,13 @@ class ExploreScreen extends Component {
     else{
       // marker.showCallout()
 
-      Alert.alert(
-        'Name',
-        point.json.name,
-      )
+      // Alert.alert(
+      //   'Name',
+      //   point.json.name,
+      // )
+
+      this.props.selectPoint(point)
+
     }
   }
 
@@ -103,7 +107,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getPoints: (region) => dispatch(ExploreActions.getPoints(region)),
-  setRegion: (region) => dispatch(ExploreActions.setRegion(region))
+  setRegion: (region) => dispatch(ExploreActions.setRegion(region)),
+  selectPoint: (point) => dispatch(ExploreActions.selectPoint(point))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExploreScreen)

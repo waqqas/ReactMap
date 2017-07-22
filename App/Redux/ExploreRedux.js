@@ -10,7 +10,8 @@ const {Types, Creators} = createActions({
   getPointsSuccess: ['response'],
   getPointsFailure: ['response'],
   setRegion: ['region'],
-  resetPoints: null
+  resetPoints: null,
+  selectPoint: ['point']
 })
 
 export const ExploreTypes = Types
@@ -22,7 +23,8 @@ export const INITIAL_STATE = Immutable({
   points: [],
   region: AppConfig.initialRegion,
   fetching: false,
-  error: null
+  error: null,
+  selectedPoint: null
 })
 
 /* ------------- Reducers ------------- */
@@ -40,6 +42,7 @@ export const getPointsFailure = (state) => state.merge({fetching: false, error: 
 export const setRegion = (state, {region}) => state.merge({region})
 
 export const resetPoints = (state) => state.merge({points:[]})
+export const selectPoint = (state, {point}) => state.merge({selectedPoint: point})
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -48,5 +51,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_POINTS_SUCCESS]: getPointsSuccess,
   [Types.GET_POINTS_FAILURE]: getPointsFailure,
   [Types.SET_REGION]: setRegion,
-  [Types.RESET_POINTS]: resetPoints
+  [Types.RESET_POINTS]: resetPoints,
+  [Types.SELECT_POINT]: selectPoint
 })

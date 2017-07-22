@@ -22,7 +22,8 @@ const colors = {
   border: '#483F53',
   banner: '#5F3E63',
   text: '#E0D7E5',
-  iosBlue: '#007AFF'
+  iosBlue: '#007AFF',
+  black: '#000000'
 }
 
 export default colors
