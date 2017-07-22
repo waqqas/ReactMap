@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
+import {Image, Text, TouchableWithoutFeedback, View, Alert} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
@@ -32,12 +32,14 @@ class ExploreScreen extends Component {
   }
 
   onRegionChange(region) {
+    // console.log('onRegionChange: ', region)
     this.props.selectPoint(null)
     this.props.setRegion(region)
   }
 
   onRegionChangeComplete(region) {
-    // console.log('region: ', region)
+    // console.log('onRegionChangeComplete: ', region)
+    this.props.setRegion(region)
     this.props.getPoints(region)
   }
 
@@ -202,6 +204,7 @@ class ExploreScreen extends Component {
         <MapView style={styles.map}
                  ref='map'
                  region={this.props.region}
+                 initialRegion={this.props.region}
                  onRegionChange={this.onRegionChange}
                  onRegionChangeComplete={this.onRegionChangeComplete}>
           {this.props.points.map((point, i) => {

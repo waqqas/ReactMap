@@ -18,8 +18,6 @@ class SplashScreen extends Component {
         ]
       })
       this.props.navigation.dispatch(resetAction)
-
-
     }
   }
 
