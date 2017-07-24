@@ -35,10 +35,7 @@ class PoiDetailScreen extends Component {
   }
 
   onFavoritePressed() {
-    // console.log('current point: ', this.props.point)
-    // console.log('fav points: ', this.props.favoritePoints)
-
-    if (this.isPointFavorite(this.props.point) === false) {
+    if (this.isPointFavorite(this.props.favoritePoints) === false) {
       this.props.addPointToFavorite(this.props.point)
     }
     else {
@@ -46,31 +43,29 @@ class PoiDetailScreen extends Component {
     }
   }
 
-  isPointFavorite(point) {
-    const favoritePoint = _.find(this.props.favoritePoints, (pt) => {
-      return (pt.json.id === point.json.id)
+  isPointFavorite(favoritePoints) {
+    const favoritePoint = _.find(favoritePoints, (pt) => {
+      return (pt.json.id === this.props.point.json.id)
     })
-
     return (favoritePoint !== undefined)
   }
 
   componentDidMount() {
-    const isFavorite = this.isPointFavorite(this.props.point)
+    const isFavorite = this.isPointFavorite(this.props.favoritePoints)
 
     this.props.navigation.setParams({
       isFavorite,
       onPressed: this.onFavoritePressed
-    });
+    })
   }
 
   componentWillReceiveProps(nextProps) {
-    const isCurrentFavorite = this.isPointFavorite(this.props.point)
-    const isNextFavorite = this.isPointFavorite(nextProps.point)
+    const isFavorite = this.isPointFavorite(nextProps.favoritePoints)
 
-    console.log(isCurrentFavorite, isNextFavorite)
-    if (isCurrentFavorite !== isNextFavorite) {
-      this.props.navigation.setParams({isFavorite: isNextFavorite})
+    if (nextProps.navigation.state.params.isFavorite !== isFavorite) {
+      this.props.navigation.setParams({isFavorite})
     }
+
   }
 
   render() {
