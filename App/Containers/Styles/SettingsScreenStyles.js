@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { Metrics, ApplicationStyles } from '../../Themes/'
+
+import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -15,5 +16,34 @@ export default StyleSheet.create({
   },
   centered: {
     alignItems: 'center'
+  },
+  listView: {
+    marginLeft: Metrics.marginHorizontal,
+    marginRight: Metrics.marginHorizontal,
+    paddingTop: Metrics.marginVertical,
+    paddingBottom: Metrics.marginVertical
+  },
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'space-between',
+    height: 30,
+  },
+  optionTitle: {
+    fontFamily: Fonts.type.base,
+    fontSize: Fonts.size.regular,
+    color: Colors.charcoal,
+  },
+  optionValue: {
+    color: Colors.steel,
+    fontSize: Fonts.size.medium
+  },
+  rowIcon:{
+    fontSize: 20,
+    color: Colors.iosBlue
+  },
+  detailIcon:{
+    fontSize: 20,
+    color: Colors.steel
   }
 })
