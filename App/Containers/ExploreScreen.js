@@ -138,7 +138,7 @@ class ExploreScreen extends Component {
           })}
         </MapView>
         {point && <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('detail')} style={{position: 'absolute', top: Metrics.navBarHeight, left: 0, right: 0, bottom: 0}}>
-          <View style={{flexDirection: 'row', backgroundColor: Colors.silver, justifyContent: 'space-around', alignItems: 'center', paddingTop: Metrics.marginVertical, paddingBottom: Metrics.marginVertical}}>
+          <View style={{flexDirection: 'row', backgroundColor: Colors.silver, justifyContent: 'space-around', alignItems: 'center', paddingTop: Metrics.marginVertical, paddingBottom: Metrics.marginVertical, paddingLeft: Metrics.marginHorizontal }}>
             <Image source={icon} style={{height: 40, width: 40}}/>
             <View style={{ flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10 }}>
               <Text numberOfLines={2}  style={{
