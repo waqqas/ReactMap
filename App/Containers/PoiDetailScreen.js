@@ -1,21 +1,47 @@
 import React, {Component} from "react";
-import {View, WebView} from "react-native";
+import {TouchableOpacity, View, WebView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
 // Styles
+import AppActions from "../Redux/AppRedux";
 import styles from "./Styles/PoiDetailScreenStyles";
 
 
-class ExploreScreen extends Component {
+class PoiDetailScreen extends Component {
 
-  static navigationOptions = ({navigation}) => ({
-    title: 'Details',
-    tabBarIcon: ({focused, tintColor}) => (
-      <Icon name="compass" style={focused ? styles.tabBarIcon : styles.tabBarIconInactive}/>)
-  });
+  static navigationOptions = ({navigation}) => {
+    let headerRight = null
+
+    if (navigation.state.params) {
+      const iconName = navigation.state.params.isFavorite ? 'heart' : 'heart-o'
+
+      headerRight = (
+        <TouchableOpacity onPress={navigation.state.params.toggleFavorite}>
+          <Icon name={iconName} style={styles.navBarRightIcon}/>
+        </TouchableOpacity>)
+    }
+    return ({
+      title: 'Details',
+      headerRight
+    })
+  }
 
   constructor(props) {
     super(props)
+
+    this.toggleFavorite = this.toggleFavorite.bind(this)
+  }
+
+  toggleFavorite() {
+    this.props.toggleFavorite(this.props.point)
+  }
+
+  componentDidMount() {
+    const isFavorite = false
+    this.props.navigation.setParams({
+      isFavorite,
+      toggleFavorite: this.toggleFavorite
+    });
   }
 
   render() {
@@ -34,7 +60,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = (dispatch) => ({
+  toggleFavorite: (point) => dispatch(AppActions.toggleFavorite(point))
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExploreScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(PoiDetailScreen)
 

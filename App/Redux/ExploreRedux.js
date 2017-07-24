@@ -1,5 +1,6 @@
 import {createActions, createReducer} from "reduxsauce";
 import Immutable from "seamless-immutable";
+import _ from 'lodash'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -8,7 +9,8 @@ const {Types, Creators} = createActions({
   getPointsSuccess: ['response'],
   getPointsFailure: ['response'],
   resetPoints: null,
-  selectPoint: ['point']
+  selectPoint: ['point'],
+  toggleFavorite: ['point']
 })
 
 export const ExploreTypes = Types
@@ -36,7 +38,18 @@ export const getPointsSuccess = (state, {response}) => {
 export const getPointsFailure = (state) => state.merge({fetching: false, error: true, points: []})
 
 export const resetPoints = (state) => state.merge({points: []})
+
 export const selectPoint = (state, {point}) => state.merge({selectedPoint: point})
+
+export const toggleFavorite = (state, {point}) => {
+  const selectedPoint = _.cloneDeep(state.selectedPoint)
+
+  // #FIXME: point matching
+  if (selectedPoint.id === point.id) {
+    selectedPoint.iFavorite = !point.isFavorite
+  }
+  return state.merge({selectedPoint})
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -45,5 +58,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_POINTS_SUCCESS]: getPointsSuccess,
   [Types.GET_POINTS_FAILURE]: getPointsFailure,
   [Types.RESET_POINTS]: resetPoints,
-  [Types.SELECT_POINT]: selectPoint
+  [Types.SELECT_POINT]: selectPoint,
+  [Types.TOGGLE_FAVORITE]: toggleFavorite
 })

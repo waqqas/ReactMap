@@ -1,10 +1,11 @@
 import {StackNavigator, TabNavigator} from "react-navigation";
+
 import SearchScreen from "../Containers/SearchScreen";
 import ExploreScreen from "../Containers/ExploreScreen";
 import FavoritesScreen from "../Containers/FavoritesScreen";
 import SettingsScreen from "../Containers/SettingsScreen";
 import PoiDetailScreen from "../Containers/PoiDetailScreen";
-import SplashScreen from '../Containers/SplashScreen'
+import SplashScreen from "../Containers/SplashScreen";
 
 import styles from "./Styles/NavigationStyles";
 
@@ -34,10 +35,7 @@ const MainNav = TabNavigator({
 
 const PrimaryNav = StackNavigator({
     detail: {
-      screen: PoiDetailScreen,
-      navigationOptions: {
-        headerStyle: styles.navBar,
-      }
+      screen: PoiDetailScreen
     },
     splash: {
       screen: SplashScreen
