@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ListView, Text, TouchableOpacity, View, Platform, ScrollView} from "react-native";
+import {ListView, Platform, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
 import _ from 'lodash'
@@ -25,14 +25,26 @@ class SettingsScreen extends Component {
       'hybrid',
     ]
 
-    if( Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
       this.mapTypes.push('terrain')
     }
 
     this.state = {
       options: [
-        {title: 'Map Type', key: 'map-type', icon: 'map-o', optionValueProp: 'mapType', optionValue: (option) => { return _.startCase(this.props[option.optionValueProp])}},
-        {title: 'Clear Favorites', key: 'clear-favorites', icon: 'heart-o', optionValueProp: 'favoritePointCount', optionValue: (option) => { return this.props[option.optionValueProp]}}
+        {
+          title: 'Map Type', key: 'map-type', icon: 'map-o', optionValueProp: 'mapType', optionValue: (option) => {
+          return _.startCase(this.props[option.optionValueProp])
+        }
+        },
+        {
+          title: 'Clear Favorites',
+          key: 'clear-favorites',
+          icon: 'heart-o',
+          optionValueProp: 'favoritePointCount',
+          optionValue: (option) => {
+            return this.props[option.optionValueProp]
+          }
+        }
       ]
     }
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
@@ -70,7 +82,7 @@ class SettingsScreen extends Component {
     return (
       <View style={styles.mainContainer}>
         <ListView
-          renderScrollComponent={(props) => { console.log(props); return (<ScrollView/>)}}
+          renderScrollComponent={(props) => (<ScrollView/>)}
           dataSource={this.ds.cloneWithRows(this.state.options)}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections
