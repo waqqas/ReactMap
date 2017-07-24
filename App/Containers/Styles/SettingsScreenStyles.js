@@ -17,19 +17,13 @@ export default StyleSheet.create({
   centered: {
     alignItems: 'center'
   },
-  listView: {
-    // marginLeft: Metrics.marginHorizontal,
-    // marginRight: Metrics.marginHorizontal,
-    marginTop: Metrics.marginVertical,
-    marginBottom: Metrics.marginVertical,
-    paddingRight: Metrics.marginHorizontal
-  },
   optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent:'space-between',
     height: 40,
-    backgroundColor: Colors.silver
+    backgroundColor: Colors.silver,
+    paddingRight: Metrics.marginHorizontal
   },
   optionTitle: {
     fontFamily: Fonts.type.base,

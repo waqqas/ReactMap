@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ListView, Text, TouchableOpacity, View, Platform} from "react-native";
+import {ListView, Text, TouchableOpacity, View, Platform, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
 import _ from 'lodash'
@@ -70,7 +70,7 @@ class SettingsScreen extends Component {
     return (
       <View style={styles.mainContainer}>
         <ListView
-          style={styles.listView}
+          renderScrollComponent={(props) => { console.log(props); return (<ScrollView/>)}}
           dataSource={this.ds.cloneWithRows(this.state.options)}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections
