@@ -6,6 +6,7 @@ import _ from "lodash";
 // Styles
 import AppActions from "../Redux/AppRedux";
 import styles from "./Styles/PoiDetailScreenStyles";
+import {Colors} from '../Themes'
 
 
 class PoiDetailScreen extends Component {
@@ -18,7 +19,7 @@ class PoiDetailScreen extends Component {
 
       headerRight = (
         <TouchableOpacity onPress={navigation.state.params.onPressed}>
-          <Icon name={iconName} style={styles.navBarRightIcon}/>
+          <Icon name={iconName} style={styles.navBarRightIcon} color={Colors.heart} />
         </TouchableOpacity>)
     }
     return ({

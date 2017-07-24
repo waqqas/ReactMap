@@ -89,7 +89,6 @@ const ApplicationStyles = {
       color: Colors.snow
     },
     navBarRightIcon: {
-      color: Colors.fire,
       fontSize: 20,
       paddingRight: Metrics.marginHorizontal
     },
