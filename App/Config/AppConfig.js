@@ -39,5 +39,6 @@ export default {
     0.0005,
     0.0005,
     0.0005,
-    0.0005] // and so on up to 20
+    0.0005], // and so on up to 20
+  defaultMapType: 'standard'
 }

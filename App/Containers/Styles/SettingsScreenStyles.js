@@ -18,16 +18,18 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   listView: {
-    marginLeft: Metrics.marginHorizontal,
-    marginRight: Metrics.marginHorizontal,
-    paddingTop: Metrics.marginVertical,
-    paddingBottom: Metrics.marginVertical
+    // marginLeft: Metrics.marginHorizontal,
+    // marginRight: Metrics.marginHorizontal,
+    marginTop: Metrics.marginVertical,
+    marginBottom: Metrics.marginVertical,
+    paddingRight: Metrics.marginHorizontal
   },
   optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent:'space-between',
-    height: 30,
+    height: 40,
+    backgroundColor: Colors.silver
   },
   optionTitle: {
     fontFamily: Fonts.type.base,
@@ -35,15 +37,16 @@ export default StyleSheet.create({
     color: Colors.charcoal,
   },
   optionValue: {
-    color: Colors.steel,
+    color: Colors.charcoal,
     fontSize: Fonts.size.medium
   },
   rowIcon:{
+    marginLeft: Metrics.marginHorizontal,
     fontSize: 20,
     color: Colors.iosBlue
   },
   detailIcon:{
-    fontSize: 20,
+    fontSize: 15,
     color: Colors.steel
   }
 })

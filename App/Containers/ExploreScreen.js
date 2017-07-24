@@ -114,6 +114,7 @@ class ExploreScreen extends Component {
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
                  ref='map'
+                 mapType={this.props.mapType}
                  region={this.props.region}
                  initialRegion={this.props.region}
                  onRegionChange={this.onRegionChange}
@@ -163,7 +164,8 @@ const mapStateToProps = (state) => {
   return {
     points: state.explore.points,
     point: state.explore.selectedPoint,
-    region: state.app.region
+    region: state.app.region,
+    mapType: state.app.mapType
   }
 }
 
