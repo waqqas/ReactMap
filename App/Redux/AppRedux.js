@@ -9,10 +9,10 @@ import AppConfig from "../Config/AppConfig";
 
 const {Types, Creators} = createActions({
   setRegion: ['region'],
-  addFavoritePoint: ['point'],
+  addPointToFavorite: ['point'],
+  removePointFromFavorite: ['point'],
   clearFavoritePoints: null,
-  setMapType: ['mapType'],
-  toggleFavorite: ['point']
+  setMapType: ['mapType']
 })
 
 export const AppTypes = Types
@@ -30,29 +30,25 @@ export const INITIAL_STATE = Immutable({
 
 export const setRegion = (state, {region}) => state.merge({region})
 
-export const addFavoritePoint = (state, {point}) => state.merge({favoritePoints: state.favoritePoints.concat(point)})
+export const addPointToFavorite = (state, {point}) => state.merge({favoritePoints: state.favoritePoints.concat(point)})
+
+export const removePointFromFavorite = (state, {point}) => {
+  const favoritePoints = _.filter(state.favoritePoints, (pt) => {
+    return( pt.json.id !== point.json.id)
+  })
+  return state.merge({favoritePoints})
+}
+
 export const setMapType = (state, {mapType}) => state.merge({mapType})
 
 export const clearFavoritePoints = (state) => state.merge({favoritePoints: []})
-
-export const toggleFavorite = (state, {point}) => {
-  const favoritePoints = _.map(_.cloneDeep(state.favoritePoints), (currentPoint) => {
-    // FIXME: point matching
-    if (currentPoint.id === point.id) {
-      currentPoint.isFavorite = !point.isFavorite
-    }
-    return currentPoint
-  })
-
-  return state.merge({favoritePoints})
-}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_REGION]: setRegion,
-  [Types.ADD_FAVORITE_POINT]: addFavoritePoint,
+  [Types.ADD_POINT_TO_FAVORITE]: addPointToFavorite,
+  [Types.REMOVE_POINT_FROM_FAVORITE]: removePointFromFavorite,
   [Types.CLEAR_FAVORITE_POINTS]: clearFavoritePoints,
-  [Types.SET_MAP_TYPE]: setMapType,
-  [Types.TOGGLE_FAVORITE]: toggleFavorite
+  [Types.SET_MAP_TYPE]: setMapType
 })
