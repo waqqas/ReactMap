@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ListView, Text, TouchableOpacity, View} from "react-native";
+import {ListView, Text, TouchableOpacity, View, Platform} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
 import _ from 'lodash'
@@ -19,9 +19,19 @@ class SettingsScreen extends Component {
   constructor(props) {
     super(props)
 
+    this.mapTypes = [
+      'standard',
+      'satellite',
+      'hybrid',
+    ]
+
+    if( Platform.OS === 'android'){
+      this.mapTypes.push('terrain')
+    }
+
     this.state = {
       options: [
-        {title: 'Map Type', key: 'map-type', icon: 'map-o', detailRouteName: 'mapTypeOption', optionValueProp: 'mapType', optionValue: (option) => { return _.startCase(this.props[option.optionValueProp])}},
+        {title: 'Map Type', key: 'map-type', icon: 'map-o', optionValueProp: 'mapType', optionValue: (option) => { return _.startCase(this.props[option.optionValueProp])}},
         {title: 'Clear Favorites', key: 'clear-favorites', icon: 'heart-o', optionValueProp: 'favoritePointCount', optionValue: (option) => { return this.props[option.optionValueProp]}}
       ]
     }
@@ -31,7 +41,12 @@ class SettingsScreen extends Component {
   selectOption(option) {
     switch (option.key) {
       case 'map-type':
-        this.props.navigation.navigate(option.detailRouteName)
+        // select the next available option
+        let mapTypeIndex = this.mapTypes.indexOf(this.props.mapType)
+        mapTypeIndex += 1
+        mapTypeIndex %= this.mapTypes.length
+
+        this.props.setMapType(this.mapTypes[mapTypeIndex])
         break
       case 'clear-favorites':
         this.props.clearFavoritePoints()
@@ -47,7 +62,6 @@ class SettingsScreen extends Component {
           <Text style={styles.optionTitle}>{option.title}</Text>
           <Text style={styles.optionValue}>{option.optionValue(option)}</Text>
         </View>
-        {option.detailRouteName && <Icon name='chevron-right' style={styles.detailIcon}/>}
       </TouchableOpacity>
     )
   }
