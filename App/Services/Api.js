@@ -16,9 +16,11 @@ const create = (baseURL = AppConfig.apiBaseUrl) => {
   })
 
   const getPoiByBbox = (data) => api.post('getPoiByBbox', data)
+  const searchPoints = (searchTerm) => api.get(`https://fishory.com/services/poi-search.php?s=${searchTerm}`)
 
   return {
-    getPoiByBbox
+    getPoiByBbox,
+    searchPoints
   }
 }
 

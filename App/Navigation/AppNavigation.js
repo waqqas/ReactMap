@@ -30,7 +30,8 @@ const MainNav = TabNavigator({
   initialRouteName: 'explore',
   navigationOptions: {
     headerStyle: styles.navBar
-  }
+  },
+  lazy: true
 })
 
 const PrimaryNav = StackNavigator({

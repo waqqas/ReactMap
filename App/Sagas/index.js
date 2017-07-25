@@ -4,8 +4,10 @@ import FixtureAPI from "../Services/FixtureApi";
 import DebugConfig from "../Config/DebugConfig";
 import {StartupTypes} from "../Redux/StartupRedux";
 import {ExploreTypes} from "../Redux/ExploreRedux";
+import {SearchTypes} from "../Redux/SearchRedux";
 import {startup} from "./StartupSagas";
 import {getPoints} from "./ExploreSagas";
+import {searchPoints} from "./SearchSagas";
 import AppConfig from '../Config/AppConfig'
 
 /* ------------- Types ------------- */
@@ -25,6 +27,7 @@ export default function * root() {
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
 
-    throttle(AppConfig.throttleDelay, ExploreTypes.GET_POINTS, getPoints, api)
+    throttle(AppConfig.throttleDelay, ExploreTypes.GET_POINTS, getPoints, api),
+    takeLatest( SearchTypes.SEARCH_POINTS, searchPoints, api)
   ]
 }
