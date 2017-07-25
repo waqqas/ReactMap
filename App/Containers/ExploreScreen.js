@@ -145,7 +145,7 @@ class ExploreScreen extends Component {
                 color: Colors.black,
                 fontSize: Fonts.size.regular,
                 backgroundColor: Colors.transparent
-              }}>{this.props.point.json.name}</Text>
+              }}>{point.json.name}</Text>
               <Text style={{
                 color: Colors.black,
                 fontSize: Fonts.size.medium,
