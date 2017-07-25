@@ -92,12 +92,18 @@ const ApplicationStyles = {
       fontSize: 20,
       paddingRight: Metrics.marginHorizontal
     },
+    navBarLeftIcon: {
+      fontSize: 40,
+      paddingRight: Metrics.marginHorizontal
+    },
+
     navBarTitle:{
       fontFamily: Fonts.type.bold,
       color: Colors.snow
     },
     backTitleStyle: {
-      color: Colors.snow,
+      color: Colors.iosBlue,
+      fontSize: Fonts.size.regular,
       fontFamily: Fonts.type.base
     }
   }
