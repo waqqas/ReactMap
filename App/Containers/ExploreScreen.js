@@ -114,6 +114,7 @@ class ExploreScreen extends Component {
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
                  ref='map'
+                 pitchEnabled={false}
                  mapType={this.props.mapType}
                  region={this.props.region}
                  initialRegion={this.props.region}
