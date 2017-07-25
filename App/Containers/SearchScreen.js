@@ -23,7 +23,9 @@ class SearchScreen extends Component {
   constructor(props) {
     super(props)
 
-    this.searchPoints = this.searchPoints.bind(this)
+    this.state = {
+      searchTerm: ''
+    }
 
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   }
@@ -38,8 +40,7 @@ class SearchScreen extends Component {
     const info = getPoiInfo(point)
 
     return (
-      <TouchableWithoutFeedback onPress={this.showDetails.bind(this, point)}
-                                style={{position: 'absolute', top: Metrics.navBarHeight, left: 0, right: 0, bottom: 0}}>
+      <TouchableWithoutFeedback onPress={this.showDetails.bind(this, point)}>
         <View style={{
           flexDirection: 'row',
           backgroundColor: Colors.silver,
@@ -69,17 +70,20 @@ class SearchScreen extends Component {
     )
   }
 
+  onCancel() {
+    this.setState({searchTerm: ''})
+    this.props.resetSearchPoints()
+  }
 
-  searchPoints(searchTerm) {
-    console.log('searching: ', searchTerm)
+  onSearch(searchTerm) {
+    this.setState({searchTerm})
     this.props.searchPoints(searchTerm)
   }
 
   render() {
     return (
       <View style={styles.mainContainer}>
-        <SearchBar onSearch={this.searchPoints} onCancel={() => {
-        }}/>
+        <SearchBar searchTerm={this.state.searchTerm} onSearch={this.onSearch.bind(this)} onCancel={this.onCancel.bind(this)}/>
         <ListView
           renderScrollComponent={(props) => (<ScrollView/>)}
           dataSource={this.ds.cloneWithRows(this.props.points)}
@@ -93,13 +97,13 @@ class SearchScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    points: state.search.points,
-    point: state.explore.selectedPoint
+    points: state.search.points
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   searchPoints: (searchTerm) => dispatch(SearchActions.searchPoints(searchTerm)),
+  resetSearchPoints: () => dispatch(SearchActions.resetSearchPoints()),
   selectPoi: (point) => dispatch(ExploreActions.selectPoi(point))
 })
 

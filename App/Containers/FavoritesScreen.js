@@ -60,7 +60,7 @@ class FavoritesScreen extends Component {
       <View style={styles.mainContainer}>
         <ListView
           renderScrollComponent={(props) => (<ScrollView/>)}
-          dataSource={this.ds.cloneWithRows(this.props.favoritePoints)}
+          dataSource={this.ds.cloneWithRows(this.props.points)}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections
         />
@@ -73,7 +73,7 @@ class FavoritesScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    favoritePoints: state.app.favoritePoints,
+    points: state.app.favoritePoints
 
   }
 }

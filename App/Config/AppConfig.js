@@ -1,5 +1,5 @@
 // Simple React Native specific changes
-import {Colors} from "../Themes";
+import {Colors, Images} from "../Themes";
 
 export default {
   // font scaling override - RN default is on
@@ -40,5 +40,6 @@ export default {
     0.0005,
     0.0005,
     0.0005], // and so on up to 20
-  defaultMapType: 'standard'
+  defaultMapType: 'standard',
+  defaultPoiInfo: {icon: Images.logo, text: 'Unknown'}
 }

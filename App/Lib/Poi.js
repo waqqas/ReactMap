@@ -1,9 +1,9 @@
 import _ from 'lodash'
+import AppConfig from '../Config/AppConfig'
 import {Images} from '../Themes'
 
 export function getPoiInfo(point) {
-  let text = ''
-  let icon = null
+  let info = AppConfig.defaultPoiInfo
 
   const types = _.intersection(point.type, [2, 4])
 
@@ -12,27 +12,24 @@ export function getPoiInfo(point) {
   // if contains both type 2 and type 4 then "Boat Ramp / Marina"
 
   if (types.length === 2) {
-    text = 'Boat Ramp / Marina'
+    info.text = 'Boat Ramp / Marina'
   }
   else if (_.indexOf(types, 2) !== -1) {
-    text = 'Boat Ramp'
+    info.text = 'Boat Ramp'
   }
   else if (_.indexOf(types, 4) !== -1) {
-    text = 'Marina'
+    info.text = 'Marina'
   }
 
   // if it contains a 2 it would get the "Ramp" icon
   // if it contains a 4 and not a 2 it would get the "Anchor" icon
   if (_.indexOf(types, 2) !== -1) {
-    icon = Images.boatRamp
+    info.icon = Images.boatRamp
   }
   else if (_.indexOf(types, 4) !== -1) {
-    icon = Images.anchor
+    info.icon = Images.anchor
   }
 
-  return {
-    icon,
-    text
-  }
+  return info
 
 }
