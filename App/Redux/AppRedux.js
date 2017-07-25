@@ -34,7 +34,7 @@ export const addPointToFavorite = (state, {point}) => state.merge({favoritePoint
 
 export const removePointFromFavorite = (state, {point}) => {
   const favoritePoints = _.filter(state.favoritePoints, (pt) => {
-    return( pt.json.id !== point.json.id)
+    return( pt.id !== point.id)
   })
   return state.merge({favoritePoints})
 }

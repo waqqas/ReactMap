@@ -60,7 +60,7 @@ class PoiDetailScreen extends Component {
 
   isPointFavorite(favoritePoints) {
     const favoritePoint = _.find(favoritePoints, (pt) => {
-      return (pt.json.id === this.props.point.json.id)
+      return (pt.id === this.props.point.id)
     })
     return (favoritePoint !== undefined)
   }
@@ -88,7 +88,7 @@ class PoiDetailScreen extends Component {
     const {point} = this.props
     return (
       <View style={styles.mainContainer}>
-        {point && <WebView source={{uri: `https://fishory.com/services/poi-detail.php?id=${point.json.id}&v=2`}}/>}
+        {point && <WebView source={{uri: `https://fishory.com/services/poi-detail.php?id=${point.id}&v=2`}}/>}
       </View>
     )
   }

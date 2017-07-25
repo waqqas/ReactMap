@@ -1,6 +1,5 @@
 import {createActions, createReducer} from "reduxsauce";
 import Immutable from "seamless-immutable";
-import _ from 'lodash'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -9,7 +8,8 @@ const {Types, Creators} = createActions({
   getPointsSuccess: ['response'],
   getPointsFailure: ['response'],
   resetPoints: null,
-  selectPoint: ['point']
+  selectPoint: ['point'],
+  selectPoi: ['point']
 })
 
 export const ExploreTypes = Types
@@ -38,7 +38,8 @@ export const getPointsFailure = (state) => state.merge({fetching: false, error: 
 
 export const resetPoints = (state) => state.merge({points: []})
 
-export const selectPoint = (state, {point}) => state.merge({selectedPoint: point})
+export const selectPoint = (state, {point}) => state.merge({selectedPoint: point && point.json})
+export const selectPoi = (state, {point}) => state.merge({selectedPoint: point})
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -48,4 +49,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_POINTS_FAILURE]: getPointsFailure,
   [Types.RESET_POINTS]: resetPoints,
   [Types.SELECT_POINT]: selectPoint,
+  [Types.SELECT_POI]: selectPoi,
 })

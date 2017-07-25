@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, Text, TouchableWithoutFeedback, View, Alert} from "react-native";
+import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import {connect} from "react-redux";
@@ -11,7 +11,8 @@ import ExploreActions from "../Redux/ExploreRedux";
 import AppActions from "../Redux/AppRedux";
 import AppConfig from "../Config/AppConfig";
 import CustomMarker from "../Components/CustomMarker";
-import {Colors, Fonts, Images, Metrics} from "../Themes";
+import {Colors, Fonts, Metrics} from "../Themes";
+import {getPoiInfo} from "../Lib/Poi";
 
 class ExploreScreen extends Component {
 
@@ -77,44 +78,18 @@ class ExploreScreen extends Component {
   render() {
 
     const {point} = this.props
-    let message = ''
-    let icon = null
+    let info = {text: '', icon: null}
 
     if (point) {
-
-      const types = _.intersection(point.types, [2, 4])
-
-      // if contains only type 2 in array then "Boat Ramp"
-      // if contains only type 4 in array then "Marina"
-      // if contains both type 2 and type 4 then "Boat Ramp / Marina"
-
-      if (types.length === 2) {
-        message = 'Boat Ramp / Marina'
-      }
-      else if (_.indexOf(types, 2) !== -1) {
-        message = 'Boat Ramp'
-      }
-      else if (_.indexOf(types, 4) !== -1) {
-        message = 'Marina'
-      }
-
-      // if it contains a 2 it would get the "Ramp" icon
-      // if it contains a 4 and not a 2 it would get the "Anchor" icon
-      if (_.indexOf(types, 2) !== -1) {
-        icon = Images.boatRamp
-      }
-      else if (_.indexOf(types, 4) !== -1) {
-        icon = Images.anchor
-      }
+      info = getPoiInfo(point)
     }
-
-    // console.log('selected point:', point)
 
     return (
       <View style={styles.mainContainer}>
         <MapView style={styles.map}
                  ref='map'
                  pitchEnabled={false}
+                 rotateEnabled={false}
                  mapType={this.props.mapType}
                  region={this.props.region}
                  initialRegion={this.props.region}
@@ -131,8 +106,6 @@ class ExploreScreen extends Component {
             else if (point.types.indexOf(4) !== -1) {
               pinColor = AppConfig.ptTypeFourColor
             }
-            // console.log('pt: ', i, point)
-
             return (
               <CustomMarker key={'pt-' + i} pinColor={pinColor} point={point} onPress={this.onMarkerPress}/>
             )
@@ -140,18 +113,18 @@ class ExploreScreen extends Component {
         </MapView>
         {point && <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('detail')} style={{position: 'absolute', top: Metrics.navBarHeight, left: 0, right: 0, bottom: 0}}>
           <View style={{flexDirection: 'row', backgroundColor: Colors.silver, justifyContent: 'space-around', alignItems: 'center', paddingTop: Metrics.marginVertical, paddingBottom: Metrics.marginVertical, paddingLeft: Metrics.marginHorizontal }}>
-            <Image source={icon} style={{height: 40, width: 40}}/>
+            <Image source={info.icon} style={{height: 40, width: 40}}/>
             <View style={{ flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10 }}>
               <Text numberOfLines={2}  style={{
                 color: Colors.black,
                 fontSize: Fonts.size.regular,
                 backgroundColor: Colors.transparent
-              }}>{point.json.name}</Text>
+              }}>{point.name}</Text>
               <Text style={{
                 color: Colors.black,
                 fontSize: Fonts.size.medium,
                 backgroundColor: Colors.transparent
-              }}>{message}</Text>
+              }}>{info.text}</Text>
             </View>
             <EvilIcon name='chevron-right' size={40} style={{marginRight: Metrics.marginHorizontal}}/>
           </View>
