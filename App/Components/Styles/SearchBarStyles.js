@@ -7,7 +7,7 @@ export default StyleSheet.create({
     marginTop: Metrics.smallMargin,
     backgroundColor: Colors.transparent,
     flexDirection: 'row',
-    width: Metrics.screenWidth - Metrics.baseMargin
+    width: Metrics.screenWidth - Metrics.baseMargin,
   },
   searchInput: {
     flex: 5,
@@ -19,15 +19,15 @@ export default StyleSheet.create({
     fontSize: Fonts.size.instructions,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: Colors.black,
+    borderColor: Colors.charcoal,
     paddingLeft: 30,
-    color: Colors.black,
+    color: Colors.charcoal,
     flexDirection: 'row'
   },
   searchIcon: {
     left: Metrics.doubleBaseMargin,
     alignSelf: 'center',
-    color: Colors.black,
+    color: Colors.charcoal,
     backgroundColor: Colors.transparent
   },
   cancelButton: {
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     marginHorizontal: Metrics.baseMargin
   },
   buttonLabel: {
-    color: Colors.black,
+    color: Colors.charcoal,
     fontFamily: Fonts.type.base,
     fontSize: Fonts.size.regular
   }
