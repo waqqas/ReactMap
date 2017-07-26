@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, ListView, ScrollView, Text, TouchableWithoutFeedback, View} from "react-native";
+import {Image, ListView, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {Colors, Fonts, Metrics} from "../Themes";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons"
@@ -40,7 +40,7 @@ class SearchScreen extends Component {
     const info = getPoiInfo(point)
 
     return (
-      <TouchableWithoutFeedback onPress={this.showDetails.bind(this, point)}>
+      <TouchableOpacity onPress={this.showDetails.bind(this, point)}>
         <View style={{
           flexDirection: 'row',
           backgroundColor: Colors.silver,
@@ -66,7 +66,7 @@ class SearchScreen extends Component {
           </View>
           <EvilIcon name='chevron-right' size={40} style={{marginRight: Metrics.marginHorizontal}}/>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     )
   }
 
@@ -83,7 +83,10 @@ class SearchScreen extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-        <SearchBar searchTerm={this.state.searchTerm} onSearch={this.onSearch.bind(this)} onCancel={this.onCancel.bind(this)}/>
+        <View style={styles.searchView}>
+          <SearchBar searchTerm={this.state.searchTerm} onSearch={this.onSearch.bind(this)}
+                     onCancel={this.onCancel.bind(this)}/>
+        </View>
         <ListView
           renderScrollComponent={(props) => (<ScrollView/>)}
           dataSource={this.ds.cloneWithRows(this.props.points)}

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Image, ListView, ScrollView, Text, TouchableWithoutFeedback, View} from "react-native"
+import {Image, ListView, ScrollView, Text, TouchableOpacity, View} from "react-native"
 import {connect} from "react-redux"
 import Icon from "react-native-vector-icons/FontAwesome"
 import EvilIcon from "react-native-vector-icons/EvilIcons"
@@ -24,7 +24,7 @@ class FavoritesScreen extends Component {
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   }
 
-  showDetails(point){
+  showDetails(point) {
     this.props.selectPoi(point)
     this.props.navigation.navigate('detail')
   }
@@ -34,11 +34,20 @@ class FavoritesScreen extends Component {
     const info = getPoiInfo(point)
 
     return (
-      <TouchableWithoutFeedback onPress={this.showDetails.bind(this, point)} style={{position: 'absolute', top: Metrics.navBarHeight, left: 0, right: 0, bottom: 0}}>
-        <View style={{flexDirection: 'row', backgroundColor: Colors.silver, justifyContent: 'space-around', alignItems: 'center', paddingTop: Metrics.marginVertical, paddingBottom: Metrics.marginVertical, paddingLeft: Metrics.marginHorizontal }}>
+      <TouchableOpacity onPress={this.showDetails.bind(this, point)}>
+        <View style={{
+          flexDirection: 'row',
+          backgroundColor: Colors.silver,
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          paddingTop: Metrics.marginVertical,
+          paddingBottom: Metrics.marginVertical,
+          paddingLeft: Metrics.marginHorizontal
+        }}>
           <Image source={info.icon} style={{height: 40, width: 40}}/>
-          <View style={{ flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10 }}>
-            <Text numberOfLines={2}  style={{
+          <View
+            style={{flex: 1, flexDirection: 'column', alignSelf: 'stretch', justifyContent: 'center', marginLeft: 10}}>
+            <Text numberOfLines={2} style={{
               color: Colors.black,
               fontSize: Fonts.size.regular,
               backgroundColor: Colors.transparent
@@ -51,7 +60,7 @@ class FavoritesScreen extends Component {
           </View>
           <EvilIcon name='chevron-right' size={40} style={{marginRight: Metrics.marginHorizontal}}/>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     )
   }
 
