@@ -78,7 +78,7 @@ class ExploreScreen extends Component {
   render() {
 
     const {point} = this.props
-    let info = {text: '', icon: null}
+    let info = AppConfig.defaultPoiInfo
 
     if (point) {
       info = getPoiInfo(point)

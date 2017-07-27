@@ -3,7 +3,7 @@ import AppConfig from '../Config/AppConfig'
 import {Images} from '../Themes'
 
 export function getPoiInfo(point) {
-  let info = AppConfig.defaultPoiInfo
+  let info = _.clone(AppConfig.defaultPoiInfo)
 
   const types = _.intersection(point.type, [2, 4])
 

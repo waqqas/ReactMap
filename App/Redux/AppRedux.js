@@ -22,7 +22,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   region: AppConfig.initialRegion,
-  favoritePoints: [],
+  favoritePoints: [],     // POI
   mapType: AppConfig.defaultMapType
 })
 

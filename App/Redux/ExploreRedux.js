@@ -18,10 +18,10 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  points: [],
+  points: [],           // Point
   fetching: false,
   error: null,
-  selectedPoint: null
+  selectedPoint: null     // POI
 })
 
 /* ------------- Reducers ------------- */

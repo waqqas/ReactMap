@@ -8,6 +8,10 @@ import styles from "./Styles/SplashScreenStyles";
 
 class SplashScreen extends Component {
 
+  static navigationOptions = ({navigation}) => ({
+    header: null
+  });
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.success === true) {
 
